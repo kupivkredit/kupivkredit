@@ -15,6 +15,6 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__DIR__) . '/src/Kupivkredit/ClassLoader/ClassLoader.php');
+require_once(dirname(dirname(__DIR__)) . '/src/Kupivkredit/ClassLoader/ClassLoader.php');
 $classLoader = new \Kupivkredit\ClassLoader\ClassLoader();
 $classLoader->registerAutoload();

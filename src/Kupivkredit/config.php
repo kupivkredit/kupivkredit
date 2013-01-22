@@ -31,9 +31,6 @@ $_config = array(
 	),
 	'sign-service' => array(
 		'class' => 'Kupivkredit\SignService\SignServiceImpl',
-		'properties' => array(
-			'iterationCount' => '%iterationCount%'
-		)
 	),
 	'envelope-builder' => array(
 		'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',

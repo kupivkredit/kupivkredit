@@ -15,40 +15,33 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
-
-use Kupivkredit\XMLBuilder\IXMLBuilder;
-use Kupivkredit\SignService\ISignService;
+namespace Kupivkredit\SignService;
 
 /**
- * Интерфейс билдера конверта API-вызова.
+ * Имплементация сервиса подписи сообщения.
  *
- * @package EnvelopeBuilder
+ * @package Sign
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface IEnvelopeBuilder
+class SignServiceImpl implements ISignService
 {
-	/**
-	 * Создает конверт API-вызова.
-	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return \Kupivkredit\Envelope
-	 */
-	public function build(array $message, $apiSecret);
+	const ITERATION_COUNT = 1102;
 
 	/**
-	 * Устанавливает билдер XML.
+	 * Подписывает сообщение.
 	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 * @return mixed
+	 * @param string $message
+	 * @param string $secret
+	 * @return string
 	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder);
+	public function sign($message, $secret) {
+		$message = $message.$secret;
+		$result = md5($message).sha1($message);
 
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService);
+		for($i = 0; $i < self::ITERATION_COUNT; $i++) {
+			$result = md5($result);
+		}
+
+		return $result;
+	}
 }

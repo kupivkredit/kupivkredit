@@ -17,8 +17,6 @@
 
 namespace Kupivkredit\Caller;
 
-use Kupivkredit\Envelope;
-
 /**
  * Интерфейс отправителя API-вызова.
  *
@@ -43,10 +41,10 @@ interface ICaller
 	/**
 	 * Отправляет запрос.
 	 *
-	 * @param $host
-	 * @param $call
-	 * @param Envelope $envelope
+	 * @param string $host
+	 * @param string $data
+	 *
 	 * @return \Kupivkredit\Response
 	 */
-	public function call($host, $call, Envelope $envelope);
+	public function call($host, $data = '');
 }

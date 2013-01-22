@@ -17,9 +17,9 @@
 
 namespace Kupivkredit\EnvelopeBuilder;
 
-use Kupivkredit\XML\IConstructorXML;
+use Kupivkredit\XMLBuilder\IXMLBuilder;
 use Kupivkredit\Envelope;
-use Kupivkredit\Sign\ISignService;
+use Kupivkredit\SignService\ISignService;
 
 /**
  * Имплементация билдера конверта API-вызова.
@@ -39,9 +39,9 @@ class EnvelopeBuilderImpl implements IEnvelopeBuilder
 	/**
 	 * Конструктор XML.
 	 *
-	 * @var IConstructorXML
+	 * @var IXMLBuilder
 	 */
-	protected $constructorXML = null;
+	protected $XMLBuilder = null;
 
 
 	/**
@@ -53,7 +53,7 @@ class EnvelopeBuilderImpl implements IEnvelopeBuilder
 	 */
 	public function build(array $message, $apiSecret)
 	{
-		$request = $this->constructorXML->makeXML('request', $message);
+		$request = $this->XMLBuilder->makeXML('request', $message);
 
 		$base64  = base64_encode($request->asXML());
 		$sign    = $this->signService->sign($base64, $apiSecret);
@@ -68,11 +68,11 @@ class EnvelopeBuilderImpl implements IEnvelopeBuilder
 	/**
 	 * Устанавливает конструктор XML.
 	 *
-	 * @param IConstructorXML $constructorXML
+	 * @param IXMLBuilder $XMLBuilder
 	 */
-	public function setConstructorXML(IConstructorXML $constructorXML)
+	public function setXMLBuilder(IXMLBuilder $XMLBuilder)
 	{
-		$this->constructorXML = $constructorXML;
+		$this->XMLBuilder = $XMLBuilder;
 	}
 
 	/**

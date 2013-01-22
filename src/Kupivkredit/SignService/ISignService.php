@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Этот файл является частью библиотеки КупиВкредит.
  *
@@ -15,40 +16,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
-
-use Kupivkredit\XMLBuilder\IXMLBuilder;
-use Kupivkredit\SignService\ISignService;
+namespace Kupivkredit\SignService;
 
 /**
- * Интерфейс билдера конверта API-вызова.
+ * Интерфейс сервиса подписи сообщения.
  *
- * @package EnvelopeBuilder
+ * @package Sign
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface IEnvelopeBuilder
+interface ISignService
 {
 	/**
-	 * Создает конверт API-вызова.
+	 * Подписывает сообщение.
 	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return \Kupivkredit\Envelope
+	 * @param string $message
+	 * @param string $secret
+	 * @return string
 	 */
-	public function build(array $message, $apiSecret);
-
-	/**
-	 * Устанавливает билдер XML.
-	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 * @return mixed
-	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder);
-
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService);
+	public function sign($message, $secret);
 }

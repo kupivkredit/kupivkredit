@@ -15,40 +15,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
+namespace Kupivkredit\ClassLoader\Exception;
 
-use Kupivkredit\XMLBuilder\IXMLBuilder;
-use Kupivkredit\SignService\ISignService;
+use Kupivkredit\Exception\KupivkreditException;
 
 /**
- * Интерфейс билдера конверта API-вызова.
+ * Исключение пакета.
  *
- * @package EnvelopeBuilder
+ * @package ClassLoader
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface IEnvelopeBuilder
+class ClassLoaderException extends KupivkreditException
 {
-	/**
-	 * Создает конверт API-вызова.
-	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return \Kupivkredit\Envelope
-	 */
-	public function build(array $message, $apiSecret);
 
-	/**
-	 * Устанавливает билдер XML.
-	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 * @return mixed
-	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder);
-
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService);
 }

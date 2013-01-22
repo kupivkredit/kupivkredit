@@ -18,7 +18,7 @@
 namespace Kupivkredit\DependencyManager;
 
 use ReflectionException;
-use DependencyManagerException;
+use Kupivkredit\DependencyManager\Exception\DependencyManagerException;
 use ReflectionClass;
 
 /**
@@ -46,24 +46,29 @@ class DependencyManager implements IDependencyManager
 	 *
 	 * @var array
 	 */
-	protected $config = array();
+	protected $config = null;
 
 	/**
 	 * Свойства конфигурации менеджера.
 	 *
 	 * @var array
 	 */
-	protected $properties = array();
+	protected $properties = null;
 
 	/**
 	 * Устанавливает конфигурацию менеджера.
 	 *
 	 * @param array $config
+	 * @throws DependencyManagerException
 	 */
 	public function setConfig(array $config)
     {
-		$this->config     = $config;
-	    $this->properties = isset($config['properties']) ? $config['properties'] : array();
+	    if (is_null($this->config) and is_null($this->properties)) {
+		    $this->config     = $config;
+		    $this->properties = isset($config['properties']) ? $config['properties'] : array();
+	    } else {
+		    throw new DependencyManagerException('DependencyManager already configured.');
+	    }
     }
 
 	/**
@@ -92,6 +97,7 @@ class DependencyManager implements IDependencyManager
 	/**
 	 * Возвращает свойство конфигурации менеджера.
 	 * В случае отсутствия свойства возбуждает исключение.
+	 * @todo Возможно сделать protected
 	 *
 	 * @param string $name
 	 * @return mixed
@@ -99,7 +105,7 @@ class DependencyManager implements IDependencyManager
 	 */
 	public function getProperty($name)
 	{
-		if (array_key_exists($name, $this->properties)) {
+		if (is_array($this->properties) and array_key_exists($name, $this->properties)) {
 			return $this->properties[$name];
 		} else {
 			throw new DependencyManagerException("Trying to get undefined property '$name'");
@@ -114,7 +120,7 @@ class DependencyManager implements IDependencyManager
 	 * @return object
 	 * @throws DependencyManagerException
 	 */
-	public function constructService(array $config)
+	protected function constructService(array $config)
 	{
 		$arguments  = isset($config['arguments'])  ? $this->parseConfig($config['arguments'])  : array();
 		$calls      = isset($config['calls'])      ? $this->parseConfig($config['calls'])      : array();
@@ -144,6 +150,7 @@ class DependencyManager implements IDependencyManager
 	/**
 	 * Рекурсивно обрабатывает конфигурацию.
 	 * В случае обнаружения ссылок на сервисы и свойства – заменяет их реальными значениями.
+	 * @todo Возможно сделать обычный foreach (можно будет скрыть метод getProperty)
 	 *
 	 * @param array $arguments
 	 * @return array

@@ -34,12 +34,4 @@ interface IDependencyManager
 	 * @return object
 	 */
 	public function get($service);
-
-	/**
-	 * Пытается вернуть свойство конфигурации менеджера.
-	 *
-	 * @param $name
-	 * @return mixed
-	 */
-	public function getProperty($name);
 }

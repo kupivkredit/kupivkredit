@@ -22,17 +22,15 @@
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 $_config = array(
-	'properties' => array(
-		'iterationCount' => 1102,
-	),
+	'properties' => array(),
 	'constructor-xml' => array(
-		'class' => 'Kupivkredit\XML\ConstructorXML'
+		'class' => 'Kupivkredit\XMLBuilder\XMLBuilder'
 	),
 	'caller' => array(
 		'class' => 'Kupivkredit\Caller\CallerHTTP',
 	),
 	'sign-service' => array(
-		'class' => 'Kupivkredit\Sign\SignServiceImpl',
+		'class' => 'Kupivkredit\SignService\SignServiceImpl',
 		'properties' => array(
 			'iterationCount' => '%iterationCount%'
 		)
@@ -41,7 +39,7 @@ $_config = array(
 		'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',
 		'calls' => array(
 			'setSignService'    => array('@sign-service'),
-			'setConstructorXML' => array('@constructor-xml'),
+			'setXMLBuilder' => array('@constructor-xml'),
 		),
 	)
 );

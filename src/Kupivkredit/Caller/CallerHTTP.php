@@ -18,7 +18,6 @@
 namespace Kupivkredit\Caller;
 
 use Kupivkredit\Response;
-use Kupivkredit\Envelope;
 
 /**
  * Имплементация отправителя API-вызовов.
@@ -35,19 +34,19 @@ class CallerHTTP implements ICaller
 	/**
 	 * Отправляет запрос.
 	 *
-	 * @param $host
-	 * @param $call
-	 * @param Envelope $envelope
+	 * @param string $host
+	 * @param string $data
+	 *
 	 * @return Response
 	 */
-	public function call($host, $call, Envelope $envelope)
+	public function call($host, $data = '')
 	{
 		$curl = curl_init();
 
 		$options = array(
-			CURLOPT_URL 			=> $host.'/'.$call,
+			CURLOPT_URL 			=> $host,
 			CURLOPT_CUSTOMREQUEST 	=> 'POST',
-			CURLOPT_POSTFIELDS 		=> $envelope->asXML(),
+			CURLOPT_POSTFIELDS 		=> $data,
 			CURLOPT_SSL_VERIFYPEER 	=> FALSE,
 			CURLOPT_SSL_VERIFYHOST 	=> FALSE,
 			CURLOPT_RETURNTRANSFER 	=> TRUE,

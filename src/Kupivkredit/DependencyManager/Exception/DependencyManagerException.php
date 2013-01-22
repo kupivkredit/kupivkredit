@@ -15,6 +15,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Kupivkredit\DependencyManager\Exception;
+
 use Kupivkredit\Exception\KupivkreditException;
 
 /**

@@ -15,40 +15,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
-
-use Kupivkredit\XMLBuilder\IXMLBuilder;
-use Kupivkredit\SignService\ISignService;
+namespace Kupivkredit\XMLBuilder;
 
 /**
- * Интерфейс билдера конверта API-вызова.
+ * Интерфейс конструктора XML.
  *
- * @package EnvelopeBuilder
+ * @package XML
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface IEnvelopeBuilder
+interface IXMLBuilder
 {
 	/**
-	 * Создает конверт API-вызова.
+	 * Преобразует полученный массив в xml с заданным заглавным тегом.
 	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return \Kupivkredit\Envelope
+	 * @param string $tag
+	 * @param array $data
+	 * @return \SimpleXMLElement
 	 */
-	public function build(array $message, $apiSecret);
-
-	/**
-	 * Устанавливает билдер XML.
-	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 * @return mixed
-	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder);
-
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService);
+	public function makeXML($tag, array $data);
 }

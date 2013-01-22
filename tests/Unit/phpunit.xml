@@ -1,0 +1,25 @@
+<phpunit bootstrap="bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="CallerTest">
+            <directory>Kupivkredit/Caller</directory>
+        </testsuite>
+        <testsuite name="DependencyManagerTest">
+            <directory>Kupivkredit/DependencyManager</directory>
+        </testsuite>
+        <testsuite name="EnvelopeBuilderTest">
+            <directory>Kupivkredit/EnvelopeBuilder</directory>
+        </testsuite>
+        <testsuite name="ExceptionTest">
+            <directory>Kupivkredit/Exception</directory>
+        </testsuite>
+        <testsuite name="SignTest">
+            <directory>Kupivkredit/Sign</directory>
+        </testsuite>
+        <testsuite name="XMLTest">
+            <directory>Kupivkredit/XML</directory>
+        </testsuite>
+        <testsuite name="ClassLoader">
+            <directory>Kupivkredit/ClassLoader</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

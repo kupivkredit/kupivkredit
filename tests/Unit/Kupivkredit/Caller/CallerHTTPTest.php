@@ -49,7 +49,7 @@ class CallerHTTPTest extends PHPUnit_Framework_TestCase
      */
     public function testCall()
     {
-	    $answer = $this->object->call('localhost');
-		$this->assertInstanceOf('Kupivkredit\\Response', $answer);
+        $answer = $this->object->call('localhost');
+        $this->assertInstanceOf('Kupivkredit\\Response', $answer);
     }
 }

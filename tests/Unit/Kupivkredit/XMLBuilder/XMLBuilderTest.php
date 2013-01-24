@@ -49,27 +49,27 @@ class XMLBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function testMakeXML()
     {
-	    $title    = uniqid();
-	    $subtitle = uniqid();
+        $title    = uniqid();
+        $subtitle = uniqid();
 
-	    $message = array(
-			'title' => $title,
-		    'content' => array(
-			    'subtitle' => $subtitle,
-			    'array' => array('a','b','c'),
-		    )
-	    );
+        $message = array(
+            'title' => $title,
+            'content' => array(
+                'subtitle' => $subtitle,
+                'array' => array('a','b','c'),
+            )
+        );
 
-	    $xml = $this->object->makeXML('test', $message);
-	    $this->assertInstanceOf('SimpleXMLElement', $xml);
+        $xml = $this->object->makeXML('test', $message);
+        $this->assertInstanceOf('SimpleXMLElement', $xml);
 
-	    $titleXML = $xml->xpath('/test/title[1]');
-	    $this->assertEquals($title, (string) $titleXML[0]);
+        $titleXML = $xml->xpath('/test/title[1]');
+        $this->assertEquals($title, (string) $titleXML[0]);
 
-	    $subtitleXML = $xml->xpath('/test/content/subtitle[1]');
-	    $this->assertEquals($subtitle, (string) $subtitleXML[0]);
+        $subtitleXML = $xml->xpath('/test/content/subtitle[1]');
+        $this->assertEquals($subtitle, (string) $subtitleXML[0]);
 
-	    $arrayXML = $xml->xpath('/test/content/array[1]');
-		$this->assertInternalType('array', $arrayXML);
+        $arrayXML = $xml->xpath('/test/content/array[1]');
+        $this->assertInternalType('array', $arrayXML);
     }
 }

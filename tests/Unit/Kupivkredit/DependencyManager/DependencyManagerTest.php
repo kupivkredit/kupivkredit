@@ -31,44 +31,44 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
      */
     protected $object;
 
-	public static $property;
-	public static $argument;
-	public static $call;
-	public static $config;
-	public static $service;
+    public static $property;
+    public static $argument;
+    public static $call;
+    public static $config;
+    public static $service;
 
-	/**
-	 * Инициализация конфига перед запуском всех тестов.
-	 */
-	public static function setUpBeforeClass()
-	{
-		require_once('TestService.php');
+    /**
+     * Инициализация конфига перед запуском всех тестов.
+     */
+    public static function setUpBeforeClass()
+    {
+        require_once 'TestService.php';
 
-		self::$property = uniqid('property');
-		self::$argument = uniqid('argument');
-		self::$call     = uniqid('call');
-		self::$service  = 'test';
+        self::$property = uniqid('property');
+        self::$argument = uniqid('argument');
+        self::$call     = uniqid('call');
+        self::$service  = 'test';
 
-		self::$config = array(
-			'properties' => array(
-				'property' => self::$property,
-				'argument' => self::$argument,
-				'call'     => self::$call,
-			),
-			self::$service => array(
-				'class' => 'TestService',
-				'arguments' => array(
-					'%argument%'
-				),
-				'calls' => array(
-					'setCall' => array('%call%'),
-				),
-				'properties' => array(
-					'property' => '%property%',
-				),
-			),
-		);
-	}
+        self::$config = array(
+            'properties' => array(
+                'property' => self::$property,
+                'argument' => self::$argument,
+                'call'     => self::$call,
+            ),
+            self::$service => array(
+                'class' => 'TestService',
+                'arguments' => array(
+                    '%argument%'
+                ),
+                'calls' => array(
+                    'setCall' => array('%call%'),
+                ),
+                'properties' => array(
+                    'property' => '%property%',
+                ),
+            ),
+        );
+    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -93,8 +93,8 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testSetConfig()
     {
-	    $this->object->setConfig(self::$config);
-		$this->object->setConfig(array());
+        $this->object->setConfig(self::$config);
+        $this->object->setConfig(array());
     }
 
     /**
@@ -103,93 +103,96 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-	    $this->object->setConfig(self::$config);
+        $this->object->setConfig(self::$config);
 
-	    /* @var $testService TestService */
-	    $testService = $this->object->get(self::$service);
+        /* @var $testService TestService */
+        $testService = $this->object->get(self::$service);
 
-	    $this->assertInstanceOf('TestService', $testService);
-	    $this->assertEquals(self::$property, $testService->property);
-	    $this->assertEquals(self::$argument, $testService->getArgument());
-	    $this->assertEquals(self::$call, $testService->getCall());
+        $this->assertInstanceOf('TestService', $testService);
+        $this->assertEquals(self::$property, $testService->property);
+        $this->assertEquals(self::$argument, $testService->getArgument());
+        $this->assertEquals(self::$call, $testService->getCall());
     }
 
-	/**
-	 * @covers Kupivkredit\DependencyManager\DependencyManager::get
-	 * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
-	 */
-	public function testGetException()
-	{
-		$this->object->setConfig(self::$config);
-		$this->object->get(uniqid());
-	}
+    /**
+     * @covers Kupivkredit\DependencyManager\DependencyManager::get
+     * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
+     */
+    public function testGetException()
+    {
+        $this->object->setConfig(self::$config);
+        $this->object->get(uniqid());
+    }
 
     /**
      * @covers Kupivkredit\DependencyManager\DependencyManager::getProperty
      */
     public function testGetProperty()
     {
-	    $this->object->setConfig(self::$config);
-	    $property = $this->object->getProperty('property');
+        $this->object->setConfig(self::$config);
+        $property = $this->object->getProperty('property');
 
-	    $this->assertEquals(self::$property, $property);
+        $this->assertEquals(self::$property, $property);
     }
 
-	/**
-	 * @covers Kupivkredit\DependencyManager\DependencyManager::getProperty
-	 * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
-	 */
-	public function testGetPropertyException()
-	{
-		$this->object->setConfig(self::$config);
-		$this->object->getProperty(uniqid());
-	}
+    /**
+     * @covers Kupivkredit\DependencyManager\DependencyManager::getProperty
+     * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
+     */
+    public function testGetPropertyException()
+    {
+        $this->object->setConfig(self::$config);
+        $this->object->getProperty(uniqid());
+    }
 
-	/**
-	 * @covers Kupivkredit\DependencyManager\DependencyManager::parseConfig
-	 */
-	public function testParseConfig()
-	{
-		// Глубина рекурсии
-		$deep = 5;
+    /**
+     * @covers Kupivkredit\DependencyManager\DependencyManager::parseConfig
+     */
+    public function testParseConfig()
+    {
+        // Глубина рекурсии
+        $deep = 5;
 
-		$this->object->setConfig(array(
-			'properties' => array('property'=>self::$property),
-			'stdclass'   => array('class' => '\stdClass'),
-		));
+        $this->object->setConfig(
+            array(
+                'properties' => array('property'=>self::$property),
+                'stdclass'   => array('class' => '\stdClass'),
+            )
+        );
 
-		$recursion = function(Closure $recursion, $deep, $count = 0) {
-			$array = array(
-				'property' => '%property%',
-				'stdclass' => '@stdclass'
-			);
-			if ($count < $deep) {
-				$count++;
-				$array['recursion'] = call_user_func_array($recursion, array($recursion, $deep, $count));
-			}
+        $recursion = function (Closure $recursion, $deep, $count = 0) {
+            $array = array(
+                'property' => '%property%',
+                'stdclass' => '@stdclass'
+            );
 
-			return $array;
-		};
+            if ($count < $deep) {
+                $count++;
+                $array['recursion'] = call_user_func_array($recursion, array($recursion, $deep, $count));
+            }
 
-		$config = call_user_func_array($recursion, array($recursion, $deep));
+            return $array;
+        };
 
-		$total    = 0;
-		$phpunit  = $this;
-		$property = self::$property;
+        $config = call_user_func_array($recursion, array($recursion, $deep));
 
-		$check = function(Closure $check, array $path) use (&$total, $phpunit, $property) {
-			$phpunit->assertEquals($property, $path['property']);
-			$phpunit->assertInstanceOf('\stdClass', $path['stdclass']);
+        $total    = 0;
+        $phpunit  = $this;
+        $property = self::$property;
 
-			if (isset($path['recursion'])) {
-				$total++;
-				call_user_func_array($check, array($check, $path['recursion']));
-			}
-		};
+        $check = function (Closure $check, array $path) use (&$total, $phpunit, $property) {
+            $phpunit->assertEquals($property, $path['property']);
+            $phpunit->assertInstanceOf('\stdClass', $path['stdclass']);
 
-		$parsed = $this->object->parseConfig($config);
-		call_user_func_array($check, array($check, $parsed));
+            if (isset($path['recursion'])) {
+                $total++;
+                call_user_func_array($check, array($check, $path['recursion']));
+            }
+        };
 
-		$this->assertEquals($deep, $total);
-	}
+        $parsed = $this->object->parseConfig($config);
+        call_user_func_array($check, array($check, $parsed));
+
+        $this->assertEquals($deep, $total);
+    }
 }

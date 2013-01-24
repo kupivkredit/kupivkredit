@@ -25,5 +25,4 @@ namespace Kupivkredit\Exception;
  */
 class KupivkreditException extends \Exception
 {
-
 }

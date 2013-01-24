@@ -30,7 +30,7 @@ use \SimpleXMLElement;
  */
 class Envelope extends SimpleXMLElement
 {
-	const TAG     = 'envelope';
-	const MESSAGE = 'Base64EncodedMessage';
-	const SIGN    = 'RequestSignature';
+    const TAG     = 'envelope';
+    const MESSAGE = 'Base64EncodedMessage';
+    const SIGN    = 'RequestSignature';
 }

@@ -22,143 +22,142 @@ use Kupivkredit\Response;
  */
 class ResponseTest extends PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var Response
-	 */
-	protected $object;
+    /**
+     * @var Response
+     */
+    protected $object;
 
-	/**
-	 * Sets up the fixture, for example, opens a network connection.
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp()
-	{
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+    }
 
-	/**
-	 * Tears down the fixture, for example, closes a network connection.
-	 * This method is called after a test is executed.
-	 */
-	protected function tearDown()
-	{
-	}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
-	protected function prepareResponse($status, $code, $eng, $rus, $result)
-	{
-		$response = new SimpleXMLElement('<?xml version="1.0"?><response></response>');
-		$response->addChild('status', $status);
-		$response->addChild('statusCode', $code);
+    protected function prepareResponse($status, $code, $eng, $rus, $result)
+    {
+        $response = new SimpleXMLElement('<?xml version="1.0"?><response></response>');
+        $response->addChild('status', $status);
+        $response->addChild('statusCode', $code);
 
+        if (is_array($result)) {
+            $resultXML = $response->addChild('result');
+            foreach ($result as $key => $value) {
+                $resultXML->addChild($key, $value);
+            }
+        } else {
+            $response->addChild('result', $result);
+        }
 
-		if (is_array($result)) {
-			$resultXML = $response->addChild('result');
-			foreach ($result as $key => $value) {
-				$resultXML->addChild($key, $value);
-			}
-		} else {
-			$response->addChild('result', $result);
-		}
+        $messages = $response->addChild('messages');
 
-		$messages = $response->addChild('messages');
+        $messages->addChild('eng', $eng);
+        $messages->addChild('rus', $rus);
 
-		$messages->addChild('eng', $eng);
-		$messages->addChild('rus', $rus);
+        return new Response($response->asXML());
+    }
 
-		return new Response($response->asXML());
-	}
+    public function simple()
+    {
+        return array(
+            array(Response::STATUS_FAILED, 1010, 'Test', 'Тест', 'Test'),
+            array(Response::STATUS_SUCCESS, null, 'Test', 'Тест', 'Test'),
+            array('TestStatus', '1010', 123, 123, 123),
+            array(Response::STATUS_SUCCESS, 1010, 'Test', 'Тест', array('value' => 1, 'values' => 2)),
+        );
+    }
 
-	public function simple()
-	{
-		return array(
-			array(Response::STATUS_FAILED, 1010, 'Test', 'Тест', 'Test'),
-			array(Response::STATUS_SUCCESS, null, 'Test', 'Тест', 'Test'),
-			array('TestStatus', '1010', 123, 123, 123),
-			array(Response::STATUS_SUCCESS, 1010, 'Test', 'Тест', array('value' => 1, 'values' => 2)),
-		);
-	}
+    /**
+     * @covers Kupivkredit\Response::getMessage
+     * @dataProvider simple
+     */
+    public function testGetMessage($status, $code, $eng, $rus, $result)
+    {
+        $object = $this->prepareResponse($status, $code, $eng, $rus, $result);
 
-	/**
-	 * @covers Kupivkredit\Response::getMessage
-	 * @dataProvider simple
-	 */
-	public function testGetMessage($status, $code, $eng, $rus, $result)
-	{
-		$object = $this->prepareResponse($status, $code, $eng, $rus, $result);
+        $getEng = $object->getMessage(Response::LANGUAGE_ENG);
+        $getRus = $object->getMessage(Response::LANGUAGE_RUS);
 
-		$getEng = $object->getMessage(Response::LANGUAGE_ENG);
-		$getRus = $object->getMessage(Response::LANGUAGE_RUS);
+        $this->assertInternalType('string', $getEng);
+        $this->assertInternalType('string', $getRus);
 
-		$this->assertInternalType('string', $getEng);
-		$this->assertInternalType('string', $getRus);
+        $this->assertEquals($eng, $getEng);
+        $this->assertEquals($rus, $getRus);
+    }
 
-		$this->assertEquals($eng, $getEng);
-		$this->assertEquals($rus, $getRus);
-	}
+    /**
+     * @covers Kupivkredit\Response::getResult
+     * @dataProvider simple
+     */
+    public function testGetResult($status, $code, $eng, $rus, $result)
+    {
+        $object = $this->prepareResponse($status, $code, $eng, $rus, $result);
 
-	/**
-	 * @covers Kupivkredit\Response::getResult
-	 * @dataProvider simple
-	 */
-	public function testGetResult($status, $code, $eng, $rus, $result)
-	{
-		$object = $this->prepareResponse($status, $code, $eng, $rus, $result);
+        $getResult = $object->getResult();
 
-		$getResult = $object->getResult();
+        $this->assertInstanceOf('SimpleXMLElement', $getResult);
 
-		$this->assertInstanceOf('SimpleXMLElement', $getResult);
+        if (is_array($result)) {
+            $resultXML = new SimpleXMLElement('<result></result>');
+            foreach ($result as $key => $value) {
+                $resultXML->addChild($key, $value);
+            }
+            $this->assertEquals($resultXML, $getResult);
+        } else {
+            $this->assertEquals(new SimpleXMLElement("<result>$result</result>"), $getResult);
+        }
+    }
 
-		if (is_array($result)) {
-			$resultXML = new SimpleXMLElement('<result></result>');
-			foreach ($result as $key => $value) {
-				$resultXML->addChild($key, $value);
-			}
-			$this->assertEquals($resultXML, $getResult);
-		} else {
-			$this->assertEquals(new SimpleXMLElement("<result>$result</result>"), $getResult);
-		}
-	}
+    /**
+     * @covers Kupivkredit\Response::getStatus
+     * @dataProvider simple
+     */
+    public function testGetStatus($status, $code, $eng, $rus, $result)
+    {
+        $object = $this->prepareResponse($status, $code, $eng, $rus, $result);
 
-	/**
-	 * @covers Kupivkredit\Response::getStatus
-	 * @dataProvider simple
-	 */
-	public function testGetStatus($status, $code, $eng, $rus, $result)
-	{
-		$object = $this->prepareResponse($status, $code, $eng, $rus, $result);
+        $getStatus = $object->getStatus();
 
-		$getStatus = $object->getStatus();
+        $this->assertInternalType('string', $status);
+        $this->assertEquals($status, $getStatus);
+    }
 
-		$this->assertInternalType('string', $status);
-		$this->assertEquals($status, $getStatus);
-	}
+    /**
+     * @covers Kupivkredit\Response::getStatusCode
+     * @dataProvider simple
+     */
+    public function testGetStatusCode($status, $code, $eng, $rus, $result)
+    {
+        $object = $this->prepareResponse($status, $code, $eng, $rus, $result);
 
-	/**
-	 * @covers Kupivkredit\Response::getStatusCode
-	 * @dataProvider simple
-	 */
-	public function testGetStatusCode($status, $code, $eng, $rus, $result)
-	{
-		$object = $this->prepareResponse($status, $code, $eng, $rus, $result);
+        $getCode = $object->getStatusCode();
 
-		$getCode = $object->getStatusCode();
+        if (!is_null($getCode)) {
+            $this->assertInternalType('integer', $getCode);
+        }
 
-		if (!is_null($getCode)) {
-			$this->assertInternalType('integer', $getCode);
-		}
+        $this->assertEquals($code, $getCode);
+    }
 
-		$this->assertEquals($code, $getCode);
-	}
+    /**
+     * @covers Kupivkredit\Response::isSucceed
+     * @dataProvider simple
+     */
+    public function testIsSucceed($status, $code, $eng, $rus, $result)
+    {
+        $object = $this->prepareResponse($status, $code, $eng, $rus, $result);
+        $succeed = $object->isSucceed();
 
-	/**
-	 * @covers Kupivkredit\Response::isSucceed
-	 * @dataProvider simple
-	 */
-	public function testIsSucceed($status, $code, $eng, $rus, $result)
-	{
-		$object = $this->prepareResponse($status, $code, $eng, $rus, $result);
-		$succeed = $object->isSucceed();
-
-		$this->assertInternalType('boolean', $succeed);
-		$this->assertEquals(($status == Response::STATUS_SUCCESS), $succeed);
-	}
+        $this->assertInternalType('boolean', $succeed);
+        $this->assertEquals(($status == Response::STATUS_SUCCESS), $succeed);
+    }
 }

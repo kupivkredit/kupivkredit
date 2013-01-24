@@ -26,12 +26,12 @@ namespace Kupivkredit\SignService;
  */
 interface ISignService
 {
-	/**
-	 * Подписывает сообщение.
-	 *
-	 * @param string $message
-	 * @param string $secret
-	 * @return string
-	 */
-	public function sign($message, $secret);
+    /**
+     * Подписывает сообщение.
+     *
+     * @param  string $message
+     * @param  string $secret
+     * @return string
+     */
+    public function sign($message, $secret);
 }

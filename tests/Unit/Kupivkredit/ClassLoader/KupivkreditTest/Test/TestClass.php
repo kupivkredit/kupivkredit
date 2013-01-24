@@ -19,5 +19,4 @@ namespace KupivkreditTest\Test;
 
 class TestClass
 {
-
 }

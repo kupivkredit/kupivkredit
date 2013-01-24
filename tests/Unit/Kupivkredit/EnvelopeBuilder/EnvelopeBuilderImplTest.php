@@ -50,39 +50,50 @@ class EnvelopeBuilderImplTest extends PHPUnit_Framework_TestCase
     public function testBuild()
     {
 
-	    $XMLBuilder = $this->getMock('Kupivkredit\XMLBuilder\IXMLBuilder');
-	    $XMLBuilder
-		    ->expects($this->once())
-		    ->method('makeXML')
-		    ->will($this->returnCallback(function($tag, array $data) {
-		        $xml = new SimpleXMLElement(sprintf('<%1$s></%1$s>', $tag));
-		        array_walk($data, function($value, $key) use ($xml) {
-			        if (is_scalar($value)) {
-				        $xml->addChild($key, $value);
-			        }
-		        });
+        $XMLBuilder = $this->getMock('Kupivkredit\XMLBuilder\IXMLBuilder');
+        $XMLBuilder
+            ->expects($this->once())
+            ->method('makeXML')
+            ->will(
+                $this->returnCallback(
+                    function ($tag, array $data) {
+                        $xml = new SimpleXMLElement(sprintf('<%1$s></%1$s>', $tag));
+                        array_walk(
+                            $data,
+                            function ($value, $key) use ($xml) {
+                                if (is_scalar($value)) {
+                                    $xml->addChild($key, $value);
+                                }
+                            }
+                        );
 
-		        return $xml;
-	        }));
+                        return $xml;
+                    }
+                )
+            );
 
-	    $signService = $this->getMock('Kupivkredit\SignService\ISignService');
-	    $signService
-	        ->expects($this->once())
-		    ->method('sign')
-		    ->will($this->returnCallback(function($message, $secret) {
-		        return md5($message.$secret);
-	        }));
+        $signService = $this->getMock('Kupivkredit\SignService\ISignService');
+        $signService
+            ->expects($this->once())
+            ->method('sign')
+            ->will(
+                $this->returnCallback(
+                    function ($message, $secret) {
+                        return md5($message.$secret);
+                    }
+                )
+            );
 
-	    /**
-	     * @var $XMLBuilder Kupivkredit\XMLBuilder\IXMLBuilder
-	     * @var $signService Kupivkredit\SignService\ISignService
-	     */
-		$this->object->setXMLBuilder($XMLBuilder);
-	    $this->object->setSignService($signService);
+        /**
+         * @var $XMLBuilder Kupivkredit\XMLBuilder\IXMLBuilder
+         * @var $signService Kupivkredit\SignService\ISignService
+         */
+        $this->object->setXMLBuilder($XMLBuilder);
+        $this->object->setSignService($signService);
 
-	    $envelope = $this->object->build(array('value' => uniqid('value')), uniqid());
+        $envelope = $this->object->build(array('value' => uniqid('value')), uniqid());
 
-	    $this->assertInstanceOf('Kupivkredit\Envelope', $envelope);
+        $this->assertInstanceOf('Kupivkredit\Envelope', $envelope);
     }
 
     /**
@@ -90,9 +101,9 @@ class EnvelopeBuilderImplTest extends PHPUnit_Framework_TestCase
      */
     public function testSetXMLBuilder()
     {
-	    $XMLBuilder = $this->getMock('Kupivkredit\XMLBuilder\IXMLBuilder');
-	    /* @var $XMLBuilder Kupivkredit\XMLBuilder\IXMLBuilder */
-		$this->object->setXMLBuilder($XMLBuilder);
+        $XMLBuilder = $this->getMock('Kupivkredit\XMLBuilder\IXMLBuilder');
+        /* @var $XMLBuilder Kupivkredit\XMLBuilder\IXMLBuilder */
+        $this->object->setXMLBuilder($XMLBuilder);
     }
 
     /**
@@ -100,8 +111,8 @@ class EnvelopeBuilderImplTest extends PHPUnit_Framework_TestCase
      */
     public function testSetSignService()
     {
-	    $signService = $this->getMock('Kupivkredit\SignService\ISignService');
-	    /* @var $signService Kupivkredit\SignService\ISignService */
-		$this->object->setSignService($signService);
+        $signService = $this->getMock('Kupivkredit\SignService\ISignService');
+        /* @var $signService Kupivkredit\SignService\ISignService */
+        $this->object->setSignService($signService);
     }
 }

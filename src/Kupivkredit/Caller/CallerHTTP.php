@@ -31,41 +31,41 @@ use Kupivkredit\Response;
  */
 class CallerHTTP implements ICaller
 {
-	/**
-	 * Отправляет запрос.
-	 *
-	 * @param string $host
-	 * @param string $data
-	 *
-	 * @return Response
-	 */
-	public function call($host, $data = '')
-	{
-		$curl = curl_init();
+    /**
+     * Отправляет запрос.
+     *
+     * @param string $host
+     * @param string $data
+     *
+     * @return Response
+     */
+    public function call($host, $data = '')
+    {
+        $curl = curl_init();
 
-		$options = array(
-			CURLOPT_URL 			=> $host,
-			CURLOPT_CUSTOMREQUEST 	=> 'POST',
-			CURLOPT_POSTFIELDS 		=> $data,
-			CURLOPT_SSL_VERIFYPEER 	=> FALSE,
-			CURLOPT_SSL_VERIFYHOST 	=> FALSE,
-			CURLOPT_RETURNTRANSFER 	=> TRUE,
-			CURLOPT_HEADER 			=> TRUE,
-		);
+        $options = array(
+            CURLOPT_URL            => $host,
+            CURLOPT_CUSTOMREQUEST  => 'POST',
+            CURLOPT_POSTFIELDS     => $data,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER         => true,
+        );
 
-		curl_setopt_array($curl, $options);
+        curl_setopt_array($curl, $options);
 
-		$curlExec = curl_exec($curl);
+        $curlExec = curl_exec($curl);
 
-		if ($curlExec !== false) {
-			$body = substr($curlExec, curl_getinfo($curl, CURLINFO_HEADER_SIZE));
-			$response = new Response($body);
-		} else {
-			$response =  false;
-		}
+        if ($curlExec !== false) {
+            $body = substr($curlExec, curl_getinfo($curl, CURLINFO_HEADER_SIZE));
+            $response = new Response($body);
+        } else {
+            $response =  false;
+        }
 
-		curl_close($curl);
+        curl_close($curl);
 
-		return $response;
-	}
+        return $response;
+    }
 }

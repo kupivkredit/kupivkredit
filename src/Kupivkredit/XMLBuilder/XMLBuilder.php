@@ -27,54 +27,54 @@ use SimpleXMLElement;
  */
 class XMLBuilder implements IXMLBuilder
 {
-	/**
-	 * Преобразует полученный массив в xml с заданным заглавным тегом.
-	 *
-	 * @param string $tag
-	 * @param array $data
-	 * @return \SimpleXMLElement
-	 */
-	public function makeXML($tag, array $data)
-	{
-		$node = new SimpleXMLElement(sprintf('<%1$s></%1$s>', $tag));
+    /**
+     * Преобразует полученный массив в xml с заданным заглавным тегом.
+     *
+     * @param  string            $tag
+     * @param  array             $data
+     * @return \SimpleXMLElement
+     */
+    public function makeXML($tag, array $data)
+    {
+        $node = new SimpleXMLElement(sprintf('<%1$s></%1$s>', $tag));
 
-		return $this->constructXML($node, $data);
-	}
+        return $this->constructXML($node, $data);
+    }
 
-	/**
-	 * Рекурсивно заполняет xml-объект.
-	 *
-	 * @param SimpleXMLElement $node
-	 * @param array $data
-	 * @return SimpleXMLElement
-	 */
-	protected function constructXML(SimpleXMLElement $node, array $data)
-	{
-		foreach($data as $k => $v) {
-			if (is_array($v)) {
-				$keys = array_keys($v);
-				$allNumeric = true;
+    /**
+     * Рекурсивно заполняет xml-объект.
+     *
+     * @param  SimpleXMLElement $node
+     * @param  array            $data
+     * @return SimpleXMLElement
+     */
+    protected function constructXML(SimpleXMLElement $node, array $data)
+    {
+        foreach ($data as $k => $v) {
+            if (is_array($v)) {
+                $keys = array_keys($v);
+                $allNumeric = true;
 
-				foreach($keys as $kk) {
-					$allNumeric = $allNumeric && is_numeric($kk);
-				}
+                foreach ($keys as $kk) {
+                    $allNumeric = $allNumeric && is_numeric($kk);
+                }
 
-				if ($allNumeric) {
-					foreach($keys as $nKey) {
-						if (is_array($v[$nKey])) {
-							$this->constructXML($node->addChild($k), $v[$nKey]);
-						} else {
-							$node->{$k}[$nKey] = $v[$nKey];
-						}
-					}
-				} else {
-					$this->constructXML($node->addChild($k), $v);
-				}
-			} else {
-				$node->$k = $v;
-			}
-		}
+                if ($allNumeric) {
+                    foreach ($keys as $nKey) {
+                        if (is_array($v[$nKey])) {
+                            $this->constructXML($node->addChild($k), $v[$nKey]);
+                        } else {
+                            $node->{$k}[$nKey] = $v[$nKey];
+                        }
+                    }
+                } else {
+                    $this->constructXML($node->addChild($k), $v);
+                }
+            } else {
+                $node->$k = $v;
+            }
+        }
 
-		return $node;
-	}
+        return $node;
+    }
 }

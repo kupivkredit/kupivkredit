@@ -50,11 +50,11 @@ class SignServiceImplTest extends PHPUnit_Framework_TestCase
     public function testSign()
     {
         $message = 'hello';
-	    $secret  = '123qwe';
-	    $sign = $this->object->sign($message, $secret);
+        $secret  = '123qwe';
+        $sign = $this->object->sign($message, $secret);
 
-	    $this->assertInternalType('string', $sign);
-	    $this->assertEquals($sign, $this->object->sign($message, $secret));
-	    $this->assertNotEquals($sign, $this->object->sign($message, $secret.'1'));
+        $this->assertInternalType('string', $sign);
+        $this->assertEquals($sign, $this->object->sign($message, $secret));
+        $this->assertNotEquals($sign, $this->object->sign($message, $secret.'1'));
     }
 }

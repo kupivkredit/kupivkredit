@@ -16,6 +16,7 @@
  */
 
 namespace Kupivkredit\ClassLoader;
+
 use Kupivkredit\ClassLoader\Exception\ClassLoaderException;
 
 /**
@@ -26,121 +27,124 @@ use Kupivkredit\ClassLoader\Exception\ClassLoaderException;
  */
 class ClassLoader
 {
-	/**
-	 * Корень директории Kupivkredit.
-	 *
-	 * @var string
-	 */
-	protected $root = '';
+    /**
+     * Корень директории Kupivkredit.
+     *
+     * @var string
+     */
+    protected $root = '';
 
-	/**
-	 * Список зарегистрированных namespace'ов.
-	 *
-	 * @var array
-	 */
-	protected $namespaces = array();
+    /**
+     * Список зарегистрированных namespace'ов.
+     *
+     * @var array
+     */
+    protected $namespaces = array();
 
-	/**
-	 * Конструктор.
-	 */
-	public function __construct ()
-	{
-		$this->registerNamespace('Kupivkredit', dirname(dirname(__DIR__)));
-	}
+    /**
+     * Конструктор.
+     */
+    public function __construct ()
+    {
+        $this->registerNamespace('Kupivkredit', dirname(dirname(__DIR__)));
+    }
 
-	/**
-	 * Регистрирует namespace и путь к его корневой папке.
-	 * В случае, если имя уже зарегистрировано - возбуждает исключение.
-	 *
-	 * @param $name
-	 * @param $path
-	 * @throws Exception\ClassLoaderException
-	 */
-	public function registerNamespace($name, $path)
-	{
-		if (!array_key_exists($name, $this->namespaces)) {
-			$this->namespaces[$name] = $path;
-		} else {
-			throw new ClassLoaderException("Namespace '$name' is already registered.");
-		}
-	}
+    /**
+     * Регистрирует namespace и путь к его корневой папке.
+     * В случае, если имя уже зарегистрировано - возбуждает исключение.
+     *
+     * @param $name
+     * @param $path
+     * @throws Exception\ClassLoaderException
+     */
+    public function registerNamespace($name, $path)
+    {
+        if (!array_key_exists($name, $this->namespaces)) {
+            $this->namespaces[$name] = $path;
+        } else {
+            throw new ClassLoaderException("Namespace '$name' is already registered.");
+        }
+    }
 
-	/**
-	 * Возвращает список зарегистрированных нэймспейсов.
-	 *
-	 * @return array
-	 */
-	public function getNamespaces()
-	{
-		return $this->namespaces;
-	}
+    /**
+     * Возвращает список зарегистрированных нэймспейсов.
+     *
+     * @return array
+     */
+    public function getNamespaces()
+    {
+        return $this->namespaces;
+    }
 
-	/**
-	 * Загружает класс.
-	 *
-	 * @param $class
-	 * @return bool
-	 */
-	public function loadClass($class)
-	{
-		if ($file = $this->findFile($class)) {
-			require $file;
-			return true;
-		}
+    /**
+     * Загружает класс.
+     *
+     * @param $class
+     * @return bool
+     */
+    public function loadClass($class)
+    {
+        if ($file = $this->findFile($class)) {
+            require $file;
 
-		return false;
-	}
+            return true;
+        }
 
-	/**
-	 * Выполняет поиск файла класса.
-	 *
-	 * @param string $class
-	 * @return string|bool
-	 */
-	public function findFile ($class)
-	{
-		$core      = substr($class, 0, strpos($class, '\\')) ?: '';
-		$namespace = substr($class, 0, strrpos($class, '\\')) ?: '';
-		$className = substr($class, strrpos($class, '\\') + 1) ?: '';
+        return false;
+    }
 
-		if (array_key_exists($core, $this->namespaces)) {
-			$file = $this->namespaces[$core].DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.$className.'.php';
+    /**
+     * Выполняет поиск файла класса.
+     *
+     * @param  string      $class
+     * @return string|bool
+     */
+    public function findFile ($class)
+    {
+        $core      = substr($class, 0, strpos($class, '\\')) ?: '';
+        $namespace = substr($class, 0, strrpos($class, '\\')) ?: '';
+        $className = substr($class, strrpos($class, '\\') + 1) ?: '';
 
-			if (is_file($file)) {
-				return $file;
-			}
-		}
+        if (array_key_exists($core, $this->namespaces)) {
+            $file = implode(
+                DIRECTORY_SEPARATOR,
+                array($this->namespaces[$core], str_replace('\\', DIRECTORY_SEPARATOR, $namespace), $className.'.php')
+            );
 
-		return false;
-	}
+            if (is_file($file)) {
+                return $file;
+            }
+        }
 
-	/**
-	 * Регистрирует загрузчик в списке загрузчиков классов.
-	 *
-	 * @see spl_autoload_register
-	 *
-	 * @param bool $prepend
-	 * @return ClassLoader
-	 */
-	public function registerAutoload($prepend = false)
-	{
-		spl_autoload_register(array($this, 'loadClass'), true, $prepend);
+        return false;
+    }
 
-		return $this;
-	}
+    /**
+     * Регистрирует загрузчик в списке загрузчиков классов.
+     *
+     * @see spl_autoload_register
+     *
+     * @param  bool        $prepend
+     * @return ClassLoader
+     */
+    public function registerAutoload($prepend = false)
+    {
+        spl_autoload_register(array($this, 'loadClass'), true, $prepend);
 
-	/**
-	 * Удаляет загрузчик из списка загрузчиков классов.
-	 *
-	 * @see spl_autoload_unregister
-	 *
-	 * @return ClassLoader
-	 */
-	public function unregisterAutoload ()
-	{
-		spl_autoload_unregister(array($this, 'loadClass'));
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Удаляет загрузчик из списка загрузчиков классов.
+     *
+     * @see spl_autoload_unregister
+     *
+     * @return ClassLoader
+     */
+    public function unregisterAutoload ()
+    {
+        spl_autoload_unregister(array($this, 'loadClass'));
+
+        return $this;
+    }
 }
-

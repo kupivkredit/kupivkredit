@@ -49,95 +49,95 @@ class ClassLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testRegisterNamespace()
     {
-	    $before = count($this->object->getNamespaces());
+        $before = count($this->object->getNamespaces());
 
-	    $this->object->registerNamespace('KupivkreditTest', __DIR__);
-	    $namespaces = $this->object->getNamespaces();
+        $this->object->registerNamespace('KupivkreditTest', __DIR__);
+        $namespaces = $this->object->getNamespaces();
 
-	    $this->assertArrayHasKey('KupivkreditTest', $namespaces);
-	    $this->assertEquals(($before + 1), count($namespaces));
+        $this->assertArrayHasKey('KupivkreditTest', $namespaces);
+        $this->assertEquals(($before + 1), count($namespaces));
     }
 
-	/**
-	 * @covers Kupivkredit\ClassLoader::register
-	 * @expectedException Kupivkredit\ClassLoader\Exception\ClassLoaderException
-	 */
-	public function testRegisterNamespaceException()
-	{
-		$duplicate = 'SomeNamespace';
-		$this->object->registerNamespace($duplicate, '...');
-		$this->object->registerNamespace($duplicate, '...');
-	}
+    /**
+     * @covers Kupivkredit\ClassLoader::register
+     * @expectedException Kupivkredit\ClassLoader\Exception\ClassLoaderException
+     */
+    public function testRegisterNamespaceException()
+    {
+        $duplicate = 'SomeNamespace';
+        $this->object->registerNamespace($duplicate, '...');
+        $this->object->registerNamespace($duplicate, '...');
+    }
 
     /**
      * @covers Kupivkredit\ClassLoader::loadClass
      */
     public function testLoadClass()
     {
-	    $class = 'KupivkreditTest\Test\TestClass';
+        $class = 'KupivkreditTest\Test\TestClass';
 
-	    $this->object->registerNamespace('KupivkreditTest', __DIR__);
-	    $result = $this->object->loadClass($class);
+        $this->object->registerNamespace('KupivkreditTest', __DIR__);
+        $result = $this->object->loadClass($class);
 
-	    $this->assertTrue($result);
-	    $this->assertTrue(class_exists($class));
+        $this->assertTrue($result);
+        $this->assertTrue(class_exists($class));
     }
 
-	/**
-	 * @covers Kupivkredit\ClassLoader::loadClass
-	 */
-	public function testLoadClassFalse()
-	{
-		$class = 'KupivkreditTest\Test\TestClassNotExists';
+    /**
+     * @covers Kupivkredit\ClassLoader::loadClass
+     */
+    public function testLoadClassFalse()
+    {
+        $class = 'KupivkreditTest\Test\TestClassNotExists';
 
-		$this->object->registerNamespace('KupivkreditTest', __DIR__);
-		$result = $this->object->loadClass($class);
+        $this->object->registerNamespace('KupivkreditTest', __DIR__);
+        $result = $this->object->loadClass($class);
 
-		$this->assertFalse($result);
-		$this->assertFalse(class_exists($class));
-	}
+        $this->assertFalse($result);
+        $this->assertFalse(class_exists($class));
+    }
 
     /**
      * @covers Kupivkredit\ClassLoader::findFile
      */
     public function testFindFile()
     {
-	    $class = 'KupivkreditTest\Test\TestClass';
+        $class = 'KupivkreditTest\Test\TestClass';
 
-	    $this->object->registerNamespace('KupivkreditTest', __DIR__);
-	    $file = $this->object->findFile($class);
+        $this->object->registerNamespace('KupivkreditTest', __DIR__);
+        $file = $this->object->findFile($class);
 
-	    $this->assertInternalType('string', $file);
-	    $this->assertTrue(is_file($file));
+        $this->assertInternalType('string', $file);
+        $this->assertTrue(is_file($file));
     }
 
-	/**
-	 * @covers Kupivkredit\ClassLoader::findFile
-	 */
-	public function testFindFileFalse()
-	{
-		$class = 'KupivkreditTest\Test\TestClassNotExists';
+    /**
+     * @covers Kupivkredit\ClassLoader::findFile
+     */
+    public function testFindFileFalse()
+    {
+        $class = 'KupivkreditTest\Test\TestClassNotExists';
 
-		$this->object->registerNamespace('KupivkreditTest', __DIR__);
-		$file = $this->object->findFile($class);
+        $this->object->registerNamespace('KupivkreditTest', __DIR__);
+        $file = $this->object->findFile($class);
 
-		$this->assertInternalType('boolean', $file);
-		$this->assertFalse($file);
-		$this->assertFalse(is_file($file));
-	}
+        $this->assertInternalType('boolean', $file);
+        $this->assertFalse($file);
+        $this->assertFalse(is_file($file));
+    }
 
     /**
      * @covers Kupivkredit\ClassLoader::registerAutoload
      */
     public function testRegisterAutoload()
     {
-	    $this->object->registerNamespace(uniqid(), __DIR__);
-	    $this->object->registerAutoload();
+        $this->object->registerNamespace(uniqid(), __DIR__);
+        $this->object->registerAutoload();
 
-		$registered = array($this->object, 'loadClass');
-	    $functions  = spl_autoload_functions();
+        $registered = array($this->object, 'loadClass');
+        $functions  = spl_autoload_functions();
 
-	    $this->assertTrue(in_array($registered, $functions, true));
+        $this->assertTrue(in_array($registered, $functions, true));
     }
 
     /**
@@ -145,18 +145,18 @@ class ClassLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testUnregisterAutoload()
     {
-	    $this->object->registerNamespace(uniqid(), __DIR__);
-	    $this->object->registerAutoload();
+        $this->object->registerNamespace(uniqid(), __DIR__);
+        $this->object->registerAutoload();
 
-	    $registered = array($this->object, 'loadClass');
-	    $functions  = spl_autoload_functions();
+        $registered = array($this->object, 'loadClass');
+        $functions  = spl_autoload_functions();
 
-	    $this->assertTrue(in_array($registered, $functions, true));
+        $this->assertTrue(in_array($registered, $functions, true));
 
-	    $this->object->unregisterAutoload();
+        $this->object->unregisterAutoload();
 
-	    $functions = spl_autoload_functions();
+        $functions = spl_autoload_functions();
 
-	    $this->assertFalse(in_array($registered, $functions, true));
+        $this->assertFalse(in_array($registered, $functions, true));
     }
 }

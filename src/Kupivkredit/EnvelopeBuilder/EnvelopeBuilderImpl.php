@@ -29,59 +29,58 @@ use Kupivkredit\SignService\ISignService;
  */
 class EnvelopeBuilderImpl implements IEnvelopeBuilder
 {
-	/**
-	 * Сервис подписи сообщения.
-	 *
-	 * @var ISignService
-	 */
-	protected $signService    = null;
+    /**
+     * Сервис подписи сообщения.
+     *
+     * @var ISignService
+     */
+    protected $signService = null;
 
-	/**
-	 * Конструктор XML.
-	 *
-	 * @var IXMLBuilder
-	 */
-	protected $XMLBuilder = null;
+    /**
+     * Конструктор XML.
+     *
+     * @var IXMLBuilder
+     */
+    protected $XMLBuilder = null;
 
+    /**
+     * Создает конверт API-вызова.
+     *
+     * @param  array    $message
+     * @param  string   $apiSecret
+     * @return Envelope
+     */
+    public function build(array $message, $apiSecret)
+    {
+        $request = $this->XMLBuilder->makeXML('request', $message);
 
-	/**
-	 * Создает конверт API-вызова.
-	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return Envelope
-	 */
-	public function build(array $message, $apiSecret)
-	{
-		$request = $this->XMLBuilder->makeXML('request', $message);
+        $base64  = base64_encode($request->asXML());
+        $sign    = $this->signService->sign($base64, $apiSecret);
 
-		$base64  = base64_encode($request->asXML());
-		$sign    = $this->signService->sign($base64, $apiSecret);
+        $envelope = new Envelope(sprintf('<%1$s></%1$s>', Envelope::TAG));
+        $envelope->addChild(Envelope::MESSAGE, $base64);
+        $envelope->addChild(Envelope::SIGN, $sign);
 
-		$envelope = new Envelope(sprintf('<%1$s></%1$s>', Envelope::TAG));
-		$envelope->addChild(Envelope::MESSAGE, $base64);
-		$envelope->addChild(Envelope::SIGN, $sign);
+        return $envelope;
+    }
 
-		return $envelope;
-	}
+    /**
+     * Устанавливает конструктор XML.
+     *
+     * @param IXMLBuilder $XMLBuilder
+     */
+    public function setXMLBuilder(IXMLBuilder $XMLBuilder)
+    {
+        $this->XMLBuilder = $XMLBuilder;
+    }
 
-	/**
-	 * Устанавливает конструктор XML.
-	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder)
-	{
-		$this->XMLBuilder = $XMLBuilder;
-	}
-
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService)
-	{
-		$this->signService = $signService;
-	}
+    /**
+     * Устанавливает сервис подписи сообщений.
+     *
+     * @param ISignService $signService
+     */
+    public function setSignService(ISignService $signService)
+    {
+        $this->signService = $signService;
+    }
 }

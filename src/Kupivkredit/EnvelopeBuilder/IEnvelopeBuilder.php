@@ -28,27 +28,27 @@ use Kupivkredit\SignService\ISignService;
  */
 interface IEnvelopeBuilder
 {
-	/**
-	 * Создает конверт API-вызова.
-	 *
-	 * @param array $message
-	 * @param string $apiSecret
-	 * @return \Kupivkredit\Envelope
-	 */
-	public function build(array $message, $apiSecret);
+    /**
+     * Создает конверт API-вызова.
+     *
+     * @param  array                 $message
+     * @param  string                $apiSecret
+     * @return \Kupivkredit\Envelope
+     */
+    public function build(array $message, $apiSecret);
 
-	/**
-	 * Устанавливает билдер XML.
-	 *
-	 * @param IXMLBuilder $XMLBuilder
-	 * @return mixed
-	 */
-	public function setXMLBuilder(IXMLBuilder $XMLBuilder);
+    /**
+     * Устанавливает билдер XML.
+     *
+     * @param  IXMLBuilder $XMLBuilder
+     * @return mixed
+     */
+    public function setXMLBuilder(IXMLBuilder $XMLBuilder);
 
-	/**
-	 * Устанавливает сервис подписи сообщений.
-	 *
-	 * @param ISignService $signService
-	 */
-	public function setSignService(ISignService $signService);
+    /**
+     * Устанавливает сервис подписи сообщений.
+     *
+     * @param ISignService $signService
+     */
+    public function setSignService(ISignService $signService);
 }

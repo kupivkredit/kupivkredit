@@ -23,61 +23,61 @@
  */
 class TestService
 {
-	/**
-	 * Публичное свойство
-	 * @var string|null
-	 */
-	public $property = null;
+    /**
+     * Публичное свойство
+     * @var string|null
+     */
+    public $property = null;
 
-	/**
-	 * Закрытое свойство
-	 * @var string|null
-	 */
-	protected $argument = null;
+    /**
+     * Закрытое свойство
+     * @var string|null
+     */
+    protected $argument = null;
 
-	/**
-	 * Приватное свойство
-	 * @var string|null
-	 */
-	private $call = null;
+    /**
+     * Приватное свойство
+     * @var string|null
+     */
+    private $call = null;
 
-	/**
-	 * Конструктор.
-	 *
-	 * @param string $argument
-	 */
-	public function __construct($argument)
-	{
-		$this->argument = $argument;
-	}
+    /**
+     * Конструктор.
+     *
+     * @param string $argument
+     */
+    public function __construct($argument)
+    {
+        $this->argument = $argument;
+    }
 
-	/**
-	 * Сеттер свойства.
-	 *
-	 * @param string $call
-	 */
-	public function setCall($call)
-	{
-		$this->call = $call;
-	}
+    /**
+     * Сеттер свойства.
+     *
+     * @param string $call
+     */
+    public function setCall($call)
+    {
+        $this->call = $call;
+    }
 
-	/**
-	 * Геттер свойства, установленного через сеттер.
-	 *
-	 * @return null|string
-	 */
-	public function getCall()
-	{
-		return $this->call;
-	}
+    /**
+     * Геттер свойства, установленного через сеттер.
+     *
+     * @return null|string
+     */
+    public function getCall()
+    {
+        return $this->call;
+    }
 
-	/**
-	 * Геттер свойства, установленного через конструктор.
-	 *
-	 * @return null|string
-	 */
-	public function getArgument()
-	{
-		return $this->argument;
-	}
+    /**
+     * Геттер свойства, установленного через конструктор.
+     *
+     * @return null|string
+     */
+    public function getArgument()
+    {
+        return $this->argument;
+    }
 }

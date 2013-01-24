@@ -22,21 +22,21 @@
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 $_config = array(
-	'properties' => array(),
-	'constructor-xml' => array(
-		'class' => 'Kupivkredit\XMLBuilder\XMLBuilder'
-	),
-	'caller' => array(
-		'class' => 'Kupivkredit\Caller\CallerHTTP',
-	),
-	'sign-service' => array(
-		'class' => 'Kupivkredit\SignService\SignServiceImpl',
-	),
-	'envelope-builder' => array(
-		'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',
-		'calls' => array(
-			'setSignService'    => array('@sign-service'),
-			'setXMLBuilder' => array('@constructor-xml'),
-		),
-	)
+    'properties' => array(),
+    'constructor-xml' => array(
+        'class' => 'Kupivkredit\XMLBuilder\XMLBuilder'
+    ),
+    'caller' => array(
+        'class' => 'Kupivkredit\Caller\CallerHTTP',
+    ),
+    'sign-service' => array(
+        'class' => 'Kupivkredit\SignService\SignServiceImpl',
+    ),
+    'envelope-builder' => array(
+        'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',
+        'calls' => array(
+            'setSignService'    => array('@sign-service'),
+            'setXMLBuilder' => array('@constructor-xml'),
+        ),
+    )
 );

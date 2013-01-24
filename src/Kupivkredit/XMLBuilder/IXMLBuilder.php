@@ -25,12 +25,12 @@ namespace Kupivkredit\XMLBuilder;
  */
 interface IXMLBuilder
 {
-	/**
-	 * Преобразует полученный массив в xml с заданным заглавным тегом.
-	 *
-	 * @param string $tag
-	 * @param array $data
-	 * @return \SimpleXMLElement
-	 */
-	public function makeXML($tag, array $data);
+    /**
+     * Преобразует полученный массив в xml с заданным заглавным тегом.
+     *
+     * @param  string            $tag
+     * @param  array             $data
+     * @return \SimpleXMLElement
+     */
+    public function makeXML($tag, array $data);
 }

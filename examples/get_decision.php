@@ -51,14 +51,14 @@ $caller  = $kupivkredit->get('caller');
 // Формирование сообщения API-вызова:
 
 $envelope = $builder->build(
-	array(
-		'partnerId' => $partnerId,
-		'apiKey'    => $apiKey,
-		'params'    => array(
-			'PartnerOrderId'=>'123456789'
-		)
-	),
-	$apiSecret
+    array(
+        'partnerId' => $partnerId,
+        'apiKey'    => $apiKey,
+        'params'    => array(
+            'PartnerOrderId'=>'123456789'
+        )
+    ),
+    $apiSecret
 );
 
 // Отправка сообщения, получение результата API-вызова:

@@ -25,13 +25,19 @@ namespace Kupivkredit\DependencyManager;
  */
 interface IDependencyManager
 {
+    /**
+     * Устанавливает конфигурацию зависимостей.
+     *
+     * @param array $config
+     * @return mixed
+     */
     public function setConfig(array $config);
 
-	/**
-	 * Пытается вернуть экземпляр сервиса по ключу.
-	 *
-	 * @param string $service
-	 * @return object
-	 */
-	public function get($service);
+    /**
+     * Пытается вернуть экземпляр сервиса по ключу.
+     *
+     * @param  string $service
+     * @return object
+     */
+    public function get($service);
 }

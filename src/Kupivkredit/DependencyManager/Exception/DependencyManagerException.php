@@ -27,5 +27,4 @@ use Kupivkredit\Exception\KupivkreditException;
  */
 class DependencyManagerException extends KupivkreditException
 {
-
 }

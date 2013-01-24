@@ -27,33 +27,37 @@ use Kupivkredit\DependencyManager\DependencyManager;
  */
 final class Kupivkredit extends DependencyManager
 {
-	const HOST_TEST        = 'https://kupivkredit-test-api.tcsbank.ru:8100/api';
-	const HOST_PRODUCTION  = 'https://api.kupivkredit.ru/api';
+    const HOST_TEST        = 'https://kupivkredit-test-api.tcsbank.ru:8100/api';
+    const HOST_PRODUCTION  = 'https://api.kupivkredit.ru/api';
 
-	const API_PING                   = 'ping';
-	const API_GET_DECISION           = 'get_decision';
-	const API_CHANGE_ORDER           = 'change_order';
-	const API_CONFIRM_ORDER          = 'confirm_order';
-	const API_GET_CONTRACT           = 'get_contract';
-	const API_ORDER_COMPLETED        = 'order_completed';
-	const API_CANCEL_ORDER           = 'cancel_order';
-	const API_GET_TAKEOVER_DOCUMENTS = 'get_takeover_documents';
-	const API_GET_RETURN_GOODS_FORM  = 'get_return_goods_form';
+    const API_PING                   = 'ping';
+    const API_GET_DECISION           = 'get_decision';
+    const API_CHANGE_ORDER           = 'change_order';
+    const API_CONFIRM_ORDER          = 'confirm_order';
+    const API_GET_CONTRACT           = 'get_contract';
+    const API_ORDER_COMPLETED        = 'order_completed';
+    const API_CANCEL_ORDER           = 'cancel_order';
+    const API_GET_TAKEOVER_DOCUMENTS = 'get_takeover_documents';
+    const API_GET_RETURN_GOODS_FORM  = 'get_return_goods_form';
 
-	/**
-	 * Конструктор.
-	 *
-	 * @param array $properties
-	 */
-	public function __construct(array $properties = array())
-	{
-		$config = call_user_func(function() {
-			include('config.php');
-			return $_config;
-		});
+    /**
+     * Конструктор.
+     *
+     * @param array $properties
+     */
+    public function __construct(array $properties = array())
+    {
+        $config = call_user_func(
+            function () {
+                include 'config.php';
 
-		$config['properties'] = isset($config['properties']) ? array_merge($config['properties'], $properties) : $properties;
+                return $_config;
+            }
+        );
 
-		$this->setConfig($config);
-	}
+        $config['properties'] =
+            isset($config['properties']) ? array_merge($config['properties'], $properties) : $properties;
+
+        $this->setConfig($config);
+    }
 }

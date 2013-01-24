@@ -25,23 +25,24 @@ namespace Kupivkredit\SignService;
  */
 class SignServiceImpl implements ISignService
 {
-	const ITERATION_COUNT = 1102;
+    const ITERATION_COUNT = 1102;
 
-	/**
-	 * Подписывает сообщение.
-	 *
-	 * @param string $message
-	 * @param string $secret
-	 * @return string
-	 */
-	public function sign($message, $secret) {
-		$message = $message.$secret;
-		$result = md5($message).sha1($message);
+    /**
+     * Подписывает сообщение.
+     *
+     * @param  string $message
+     * @param  string $secret
+     * @return string
+     */
+    public function sign($message, $secret)
+    {
+        $message = $message.$secret;
+        $result = md5($message).sha1($message);
 
-		for($i = 0; $i < self::ITERATION_COUNT; $i++) {
-			$result = md5($result);
-		}
+        for ($i = 0; $i < self::ITERATION_COUNT; $i++) {
+            $result = md5($result);
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

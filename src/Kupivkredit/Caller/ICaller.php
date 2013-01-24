@@ -25,13 +25,13 @@ namespace Kupivkredit\Caller;
  */
 interface ICaller
 {
-	/**
-	 * Отправляет запрос.
-	 *
-	 * @param string $host
-	 * @param string $data
-	 *
-	 * @return \Kupivkredit\Response
-	 */
-	public function call($host, $data = '');
+    /**
+     * Отправляет запрос.
+     *
+     * @param string $host
+     * @param string $data
+     *
+     * @return \Kupivkredit\Response
+     */
+    public function call($host, $data = '');
 }

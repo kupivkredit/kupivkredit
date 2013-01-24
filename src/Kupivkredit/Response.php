@@ -31,69 +31,68 @@ use Kupivkredit\Exception\KupivkreditException;
  */
 class Response extends SimpleXMLElement
 {
-	const LANGUAGE_RUS   = 'rus';
-	const LANGUAGE_ENG   = 'eng';
+    const LANGUAGE_RUS   = 'rus';
+    const LANGUAGE_ENG   = 'eng';
 
-	const STATUS_FAILED  = 'FAILED';
-	const STATUS_SUCCESS = 'OK';
+    const STATUS_FAILED  = 'FAILED';
+    const STATUS_SUCCESS = 'OK';
 
+    /**
+     * Возвращает сообщение ответа по языку.
+     *
+     * @param $language
+     * @return string
+     * @throws KupivkreditException
+     */
+    public function getMessage($language)
+    {
+        if (isset($this->messages->{$language})) {
+            return (string) $this->messages->{$language};
+        } else {
+            throw new KupivkreditException("Trying to get undefined message");
+        }
+    }
 
-	/**
-	 * Возвращает сообщение ответа по языку.
-	 *
-	 * @param $language
-	 * @return string
-	 * @throws KupivkreditException
-	 */
-	public function getMessage($language)
-	{
-		if (isset($this->messages->{$language})) {
-			return (string) $this->messages->{$language};
-		} else {
-			throw new KupivkreditException("Trying to get undefined message");
-		}
-	}
+    /**
+     * Возвращает результат ответа.
+     *
+     * @return SimpleXMLElement
+     */
+    public function getResult()
+    {
+        /* @var $result \Kupivkredit\Response */
+        $result = $this->result;
 
-	/**
-	 * Возвращает результат ответа.
-	 *
-	 * @return SimpleXMLElement
-	 */
-	public function getResult()
-	{
-		/* @var $result \Kupivkredit\Response */
-		$result = $this->result;
+        return new SimpleXMLElement($result->asXML());
+    }
 
-		return new SimpleXMLElement($result->asXML());
-	}
+    /**
+     * Возвращает статус ответа.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return (string) $this->status;
+    }
 
-	/**
-	 * Возвращает статус ответа.
-	 *
-	 * @return string
-	 */
-	public function getStatus()
-	{
-		return (string) $this->status;
-	}
+    /**
+     * Возвращает код статуса ответа.
+     *
+     * @return null|integer
+     */
+    public function getStatusCode()
+    {
+        return isset($this->statusCode) ? (integer) $this->statusCode : null;
+    }
 
-	/**
-	 * Возвращает код статуса ответа.
-	 *
-	 * @return null|integer
-	 */
-	public function getStatusCode()
-	{
-		return isset($this->statusCode) ? (integer) $this->statusCode : null;
-	}
-
-	/**
-	 * Возвращает признак успешного выполнения запроса.
-	 *
-	 * @return bool
-	 */
-	public function isSucceed()
-	{
-		return $this->getStatus() == self::STATUS_SUCCESS;
-	}
+    /**
+     * Возвращает признак успешного выполнения запроса.
+     *
+     * @return bool
+     */
+    public function isSucceed()
+    {
+        return $this->getStatus() == self::STATUS_SUCCESS;
+    }
 }

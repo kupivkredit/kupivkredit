@@ -21,15 +21,17 @@
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 
+use Kupivkredit\Kupivkredit;
+
 // Инициализация загрузчика классов:
 
-require_once(dirname(__DIR__) . '/src/Kupivkredit/ClassLoader.php');
-$classLoader = new \Kupivkredit\ClassLoader();
+require_once(dirname(__DIR__) . '/src/Kupivkredit/ClassLoader/ClassLoader.php');
+$classLoader = new \Kupivkredit\ClassLoader\ClassLoader();
 $classLoader->registerAutoload();
 
 // Инициализация контейнера сервисов КупиВкредит:
 
-$kupivkredit = new Kupivkredit\Kupivkredit();
+$kupivkredit = new Kupivkredit();
 
 // Инициализация параметров партнера КупиВкредит:
 
@@ -61,7 +63,10 @@ $envelope = $builder->build(
 
 // Отправка сообщения, получение результата API-вызова:
 
-$response = $caller->call(Kupivkredit\Caller\ICaller::HOST_TEST, Kupivkredit\Caller\ICaller::API_GET_DECISION, $envelope);
+$host = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_GET_DECISION));
+$data = $envelope->asXML();
+
+$response = $caller->call($host, $data);
 
 // Вывод результата API-вызова:
 

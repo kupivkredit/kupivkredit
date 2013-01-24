@@ -80,11 +80,11 @@ class Response extends SimpleXMLElement
 	/**
 	 * Возвращает код статуса ответа.
 	 *
-	 * @return string
+	 * @return null|integer
 	 */
 	public function getStatusCode()
 	{
-		return (string) $this->statusCode;
+		return isset($this->statusCode) ? (integer) $this->statusCode : null;
 	}
 
 	/**

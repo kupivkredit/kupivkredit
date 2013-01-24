@@ -25,19 +25,6 @@ namespace Kupivkredit\Caller;
  */
 interface ICaller
 {
-	const HOST_TEST        = 'https://kupivkredit-test-api.tcsbank.ru:8100/api';
-	const HOST_PRODUCTION  = 'https://api.kupivkredit.ru/api';
-
-	const API_PING                   = 'ping';
-	const API_GET_DECISION           = 'get_decision';
-	const API_CHANGE_ORDER           = 'change_order';
-	const API_CONFIRM_ORDER          = 'confirm_order';
-	const API_GET_CONTRACT           = 'get_contract';
-	const API_ORDER_COMPLETED        = 'order_completed';
-	const API_CANCEL_ORDER           = 'cancel_order';
-	const API_GET_TAKEOVER_DOCUMENTS = 'get_takeover_documents';
-	const API_GET_RETURN_GOODS_FORM  = 'get_return_goods_form';
-
 	/**
 	 * Отправляет запрос.
 	 *

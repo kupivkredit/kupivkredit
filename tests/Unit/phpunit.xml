@@ -1,4 +1,4 @@
-<phpunit bootstrap="bootstrap.php" colors="true">
+<phpunit bootstrap="../bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="CallerTest">
             <directory>Kupivkredit/Caller</directory>
@@ -18,7 +18,7 @@
         <testsuite name="XMLTest">
             <directory>Kupivkredit/XML</directory>
         </testsuite>
-        <testsuite name="ClassLoader">
+        <testsuite name="ClassLoaderTest">
             <directory>Kupivkredit/ClassLoader</directory>
         </testsuite>
     </testsuites>

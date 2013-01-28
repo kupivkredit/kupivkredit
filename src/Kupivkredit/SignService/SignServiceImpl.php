@@ -20,7 +20,7 @@ namespace Kupivkredit\SignService;
 /**
  * Имплементация сервиса подписи сообщения.
  *
- * @package Sign
+ * @package SignService
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 class SignServiceImpl implements ISignService

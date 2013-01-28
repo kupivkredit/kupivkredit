@@ -38,7 +38,7 @@ $kupivkredit = new Kupivkredit();
 $partnerId = '1-17YB8ON';
 $apiKey    = '123qwe';
 $apiSecret = '321ewq';
-$host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_GET_DECISION));
+$host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_CHANGE_ORDER));
 
 /**
  * Получение необходимых сервисов для отправки запроса:
@@ -55,9 +55,28 @@ $envelope = $builder->build(
     array(
         'partnerId' => $partnerId,
         'apiKey'    => $apiKey,
-        'params'    => array(
-            'PartnerOrderId' => 'your_order_id_here'
-        )
+	    'params'    => array(
+		    'PartnerOrderId' => 'your_order_id_here',
+		    'Products' => array(
+			    'Product' => array(
+				    array(
+					    'ProductName'     => 'Your Product First',
+					    'ProductPrice'    => 12000,
+					    'ProductQuantity' => 1,
+					    'Category'        => 'Category'
+				    ),
+				    array(
+					    'ProductName'     => 'Your Product Second',
+					    'ProductPrice'    => 15000,
+					    'ProductQuantity' => 1,
+					    'Category'        => 'Category'
+				    ),
+			    ),
+		    ),
+		    'DesiredMonthlyPayment' => 1000,
+		    'DesiredCreditPeriod'   => 12,
+		    'DesiredAmount'         => 12000,
+	    )
     ),
     $apiSecret
 );

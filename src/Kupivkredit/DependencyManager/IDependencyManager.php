@@ -29,7 +29,6 @@ interface IDependencyManager
      * Устанавливает конфигурацию зависимостей.
      *
      * @param array $config
-     * @return mixed
      */
     public function setConfig(array $config);
 

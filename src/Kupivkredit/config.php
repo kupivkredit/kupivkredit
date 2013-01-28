@@ -35,8 +35,8 @@ $_config = array(
     'envelope-builder' => array(
         'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',
         'calls' => array(
-            'setSignService'    => array('@sign-service'),
-            'setXMLBuilder' => array('@constructor-xml'),
+            'setSignService' => array('@sign-service'),
+            'setXMLBuilder'  => array('@constructor-xml'),
         ),
-    )
+    ),
 );

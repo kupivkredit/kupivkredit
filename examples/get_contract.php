@@ -38,7 +38,7 @@ $kupivkredit = new Kupivkredit();
 $partnerId = '1-17YB8ON';
 $apiKey    = '123qwe';
 $apiSecret = '321ewq';
-$host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_GET_DECISION));
+$host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_GET_CONTRACT));
 
 /**
  * Получение необходимых сервисов для отправки запроса:

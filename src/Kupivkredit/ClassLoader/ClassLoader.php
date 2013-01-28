@@ -22,7 +22,7 @@ use Kupivkredit\ClassLoader\Exception\ClassLoaderException;
 /**
  * Загрузчик классов.
  *
- * @package Kupivkredit
+ * @package ClassLoader
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 class ClassLoader

@@ -22,7 +22,7 @@ use SimpleXMLElement;
 /**
  * Имплементация конструктора XML.
  *
- * @package XML
+ * @package XMLBuilder
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 class XMLBuilder implements IXMLBuilder

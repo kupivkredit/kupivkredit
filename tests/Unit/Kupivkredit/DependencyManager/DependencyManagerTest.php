@@ -89,19 +89,27 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Kupivkredit\DependencyManager\DependencyManager::setConfig
-     * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
      */
     public function testSetConfig()
     {
         $this->object->setConfig(self::$config);
-        $this->object->setConfig(array());
     }
+
+	/**
+	 * @covers Kupivkredit\DependencyManager\DependencyManager::setConfig
+	 * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
+	 */
+	public function testSetConfigToAlreadyConfiguredObject()
+	{
+		$this->object->setConfig(array());
+		$this->object->setConfig(array());
+	}
 
     /**
      * @covers Kupivkredit\DependencyManager\DependencyManager::get
      * @covers Kupivkredit\DependencyManager\DependencyManager::constructService
      */
-    public function testGet()
+    public function testGetExistingService()
     {
         $this->object->setConfig(self::$config);
 
@@ -115,10 +123,12 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Пробует получить несуществующий сервис.
+     *
      * @covers Kupivkredit\DependencyManager\DependencyManager::get
      * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
      */
-    public function testGetException()
+    public function testGetNotExistingService()
     {
         $this->object->setConfig(self::$config);
         $this->object->get(uniqid());
@@ -139,7 +149,7 @@ class DependencyManagerTest extends PHPUnit_Framework_TestCase
      * @covers Kupivkredit\DependencyManager\DependencyManager::getProperty
      * @expectedException Kupivkredit\DependencyManager\Exception\DependencyManagerException
      */
-    public function testGetPropertyException()
+    public function testGetNotExistingProperty()
     {
         $this->object->setConfig(self::$config);
         $this->object->getProperty(uniqid());

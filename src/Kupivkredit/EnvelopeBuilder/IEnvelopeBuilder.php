@@ -41,7 +41,6 @@ interface IEnvelopeBuilder
      * Устанавливает билдер XML.
      *
      * @param  IXMLBuilder $XMLBuilder
-     * @return mixed
      */
     public function setXMLBuilder(IXMLBuilder $XMLBuilder);
 

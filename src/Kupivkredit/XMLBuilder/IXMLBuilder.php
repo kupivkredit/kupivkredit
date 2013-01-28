@@ -20,7 +20,7 @@ namespace Kupivkredit\XMLBuilder;
 /**
  * Интерфейс конструктора XML.
  *
- * @package XML
+ * @package XMLBuilder
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 interface IXMLBuilder

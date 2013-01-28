@@ -20,7 +20,7 @@ namespace Kupivkredit\Exception;
 /**
  * Исключение пакета.
  *
- * @package Kupivkredit
+ * @package Exception
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
 class KupivkreditException extends \Exception

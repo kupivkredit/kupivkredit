@@ -15,32 +15,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
+namespace Kupivkredit;
 
-use Kupivkredit\Request;
-use Kupivkredit\SignService\ISignService;
+use \SimpleXMLElement;
 
 /**
- * Интерфейс билдера конверта API-вызова.
+ * Конверт API-запроса.
+ * Расширяет класс SimpleXMLElement.
  *
- * @package EnvelopeBuilder
+ * @see \SimpleXMLElement
+ *
+ * @package Kupivkredit
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface IEnvelopeBuilder
+class Request extends SimpleXMLElement
 {
-    /**
-     * Создает конверт API-вызова.
-     *
-     * @param  Request               $request
-     * @param  string                $apiSecret
-     * @return \Kupivkredit\Envelope
-     */
-    public function build(Request $request, $apiSecret);
-
-    /**
-     * Устанавливает сервис подписи сообщений.
-     *
-     * @param ISignService $signService
-     */
-    public function setSignService(ISignService $signService);
+	const TAG = 'request';
 }

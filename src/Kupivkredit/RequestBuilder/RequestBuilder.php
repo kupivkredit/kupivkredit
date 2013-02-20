@@ -17,30 +17,39 @@
 
 namespace Kupivkredit\EnvelopeBuilder;
 
+use Kupivkredit\XMLBuilder\IXMLBuilder;
 use Kupivkredit\Request;
-use Kupivkredit\SignService\ISignService;
 
-/**
- * Интерфейс билдера конверта API-вызова.
- *
- * @package EnvelopeBuilder
- * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
- */
-interface IEnvelopeBuilder
+class RequestBuilder implements IRequestBuilder
 {
-    /**
-     * Создает конверт API-вызова.
-     *
-     * @param  Request               $request
-     * @param  string                $apiSecret
-     * @return \Kupivkredit\Envelope
-     */
-    public function build(Request $request, $apiSecret);
+	/**
+	 * Конструктор XML.
+	 *
+	 * @var IXMLBuilder
+	 */
+	protected $XMLBuilder = null;
 
-    /**
-     * Устанавливает сервис подписи сообщений.
-     *
-     * @param ISignService $signService
-     */
-    public function setSignService(ISignService $signService);
+	/**
+	 * Создает сообщение API-вызова.
+	 *
+	 * @param  array                 $request
+	 *
+	 * @return \Kupivkredit\Request
+	 */
+	public function build(array $request)
+	{
+		$request = $this->XMLBuilder->makeXML(Request::TAG, $request);
+
+		return new Request($request->asXML());
+	}
+
+	/**
+	 * Устанавливает билдер XML.
+	 *
+	 * @param  IXMLBuilder $XMLBuilder
+	 */
+	public function setXMLBuilder(IXMLBuilder $XMLBuilder)
+	{
+		$this->XMLBuilder = $XMLBuilder;
+	}
 }

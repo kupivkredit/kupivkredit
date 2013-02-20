@@ -18,6 +18,7 @@
 namespace Kupivkredit\EnvelopeBuilder;
 
 use Kupivkredit\XMLBuilder\IXMLBuilder;
+use Kupivkredit\Request;
 use Kupivkredit\Envelope;
 use Kupivkredit\SignService\ISignService;
 
@@ -27,7 +28,7 @@ use Kupivkredit\SignService\ISignService;
  * @package EnvelopeBuilder
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-class EnvelopeBuilderImpl implements IEnvelopeBuilder
+class EnvelopeBuilder implements IEnvelopeBuilder
 {
     /**
      * Сервис подписи сообщения.
@@ -36,24 +37,15 @@ class EnvelopeBuilderImpl implements IEnvelopeBuilder
      */
     protected $signService = null;
 
-    /**
-     * Конструктор XML.
-     *
-     * @var IXMLBuilder
-     */
-    protected $XMLBuilder = null;
-
-    /**
-     * Создает конверт API-вызова.
-     *
-     * @param  array    $message
-     * @param  string   $apiSecret
-     * @return Envelope
-     */
-    public function build(array $message, $apiSecret)
+	/**
+	 * Создает конверт API-вызова.
+	 *
+	 * @param  Request               $request
+	 * @param  string                $apiSecret
+	 * @return \Kupivkredit\Envelope
+	 */
+	public function build(Request $request, $apiSecret)
     {
-        $request = $this->XMLBuilder->makeXML('request', $message);
-
         $base64  = base64_encode($request->asXML());
         $sign    = $this->signService->sign($base64, $apiSecret);
 
@@ -62,16 +54,6 @@ class EnvelopeBuilderImpl implements IEnvelopeBuilder
         $envelope->addChild(Envelope::SIGN, $sign);
 
         return $envelope;
-    }
-
-    /**
-     * Устанавливает конструктор XML.
-     *
-     * @param IXMLBuilder $XMLBuilder
-     */
-    public function setXMLBuilder(IXMLBuilder $XMLBuilder)
-    {
-        $this->XMLBuilder = $XMLBuilder;
     }
 
     /**

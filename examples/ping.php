@@ -43,21 +43,24 @@ $host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_PING));
 /**
  * Получение необходимых сервисов для отправки запроса:
  *
- * @var $builder \Kupivkredit\EnvelopeBuilder\IEnvelopeBuilder
+ * @var $envelopeBuilder \Kupivkredit\EnvelopeBuilder\IEnvelopeBuilder
+ * @var $requestBuilder \Kupivkredit\EnvelopeBuilder\IRequestBuilder
  * @var $caller \Kupivkredit\Caller\ICaller
  */
-$builder = $kupivkredit->get('envelope-builder');
-$caller  = $kupivkredit->get('caller');
+$requestBuilder  = $kupivkredit->get('request-builder');
+$envelopeBuilder = $kupivkredit->get('envelope-builder');
+$caller          = $kupivkredit->get('caller');
 
 // Формирование сообщения API-вызова:
 
-$envelope = $builder->build(
-    array(
-        'partnerId' => $partnerId,
-        'apiKey'    => $apiKey
-    ),
-    $apiSecret
+$request = $requestBuilder->build(
+	array(
+		'partnerId' => $partnerId,
+		'apiKey'    => $apiKey
+	)
 );
+
+$envelope = $envelopeBuilder->build($request, $apiSecret);
 
 // Отправка сообщения, получение результата API-вызова:
 

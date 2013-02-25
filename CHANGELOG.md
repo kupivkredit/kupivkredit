@@ -4,7 +4,7 @@ CHANGELOG
 ### 0.2.0 (25-02-2013)
 ______________________
 
- + Разделен функционал EnvelopeBuilder'а:
+ + Разделен функционал EnvelopeBuilder'а
  + Появился Request
  + Появился RequestBuilder
  + Мелкие доработки

@@ -32,15 +32,8 @@ interface IEnvelopeBuilder
      * Создает конверт API-вызова.
      *
      * @param  Request               $request
-     * @param  string                $apiSecret
+     * @param  string                $sign
      * @return \Kupivkredit\Envelope
      */
-    public function build(Request $request, $apiSecret);
-
-    /**
-     * Устанавливает сервис подписи сообщений.
-     *
-     * @param ISignService $signService
-     */
-    public function setSignService(ISignService $signService);
+    public function build(Request $request, $sign);
 }

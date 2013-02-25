@@ -30,13 +30,15 @@ $_config = array(
         'class' => 'Kupivkredit\Caller\CallerHTTP',
     ),
     'sign-service' => array(
-        'class' => 'Kupivkredit\SignService\SignServiceImpl',
+        'class' => 'Kupivkredit\SignService\SignService',
     ),
     'envelope-builder' => array(
-        'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilderImpl',
-        'calls' => array(
-            'setSignService' => array('@sign-service'),
-            'setXMLBuilder'  => array('@constructor-xml'),
-        ),
+        'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilder',
     ),
+	'request-builder' => array(
+		'class' => 'Kupivkredit\RequestBuilder\RequestBuilder',
+		'calls' => array(
+			'setXMLBuilder' => array('@constructor-xml')
+		)
+	),
 );

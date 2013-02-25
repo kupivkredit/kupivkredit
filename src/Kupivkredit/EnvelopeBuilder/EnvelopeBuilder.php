@@ -30,39 +30,22 @@ use Kupivkredit\SignService\ISignService;
  */
 class EnvelopeBuilder implements IEnvelopeBuilder
 {
-    /**
-     * Сервис подписи сообщения.
-     *
-     * @var ISignService
-     */
-    protected $signService = null;
 
 	/**
 	 * Создает конверт API-вызова.
 	 *
 	 * @param  Request               $request
-	 * @param  string                $apiSecret
+	 * @param  string                $sign
+	 *
 	 * @return \Kupivkredit\Envelope
 	 */
-	public function build(Request $request, $apiSecret)
+	public function build(Request $request, $sign)
     {
-        $base64  = base64_encode($request->asXML());
-        $sign    = $this->signService->sign($base64, $apiSecret);
-
         $envelope = new Envelope(sprintf('<%1$s></%1$s>', Envelope::TAG));
-        $envelope->addChild(Envelope::MESSAGE, $base64);
-        $envelope->addChild(Envelope::SIGN, $sign);
+
+        $envelope->addChild(Envelope::MESSAGE, $request->toString());
+        $envelope->addChild(Envelope::SIGN,    $sign);
 
         return $envelope;
-    }
-
-    /**
-     * Устанавливает сервис подписи сообщений.
-     *
-     * @param ISignService $signService
-     */
-    public function setSignService(ISignService $signService)
-    {
-        $this->signService = $signService;
     }
 }

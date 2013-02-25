@@ -97,7 +97,6 @@ class DependencyManager implements IDependencyManager
     /**
      * Возвращает свойство конфигурации менеджера.
      * В случае отсутствия свойства возбуждает исключение.
-     * @todo Возможно сделать protected
      *
      * @param  string                     $name
      * @return mixed

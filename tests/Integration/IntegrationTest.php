@@ -37,10 +37,20 @@ class IntegrationTest extends PHPUnit_Framework_TestCase
      */
     protected $kupivkredit;
 
+	/**
+	 * @var \Kupivkredit\RequestBuilder\IRequestBuilder;
+	 */
+	protected $requester;
+
+	/**
+	 * @var \Kupivkredit\SignService\ISignService;
+	 */
+	protected $signer;
+
     /**
      * @var \Kupivkredit\EnvelopeBuilder\IEnvelopeBuilder;
      */
-    protected $builder;
+    protected $enveloper;
 
     /**
      * @var \Kupivkredit\Caller\ICaller;
@@ -48,17 +58,20 @@ class IntegrationTest extends PHPUnit_Framework_TestCase
     protected $caller;
 
     /**
-     * Настройки перед каждым тестом
+     * Настройки перед каждым тестом.
      */
     public function setUp()
     {
         $this->kupivkredit = new Kupivkredit();
-        $this->builder     = $this->kupivkredit->get('envelope-builder');
-        $this->caller      = $this->kupivkredit->get('caller');
+
+	    $this->requester = $this->kupivkredit->get('request-builder');
+        $this->signer    = $this->kupivkredit->get('sign-service');
+	    $this->enveloper = $this->kupivkredit->get('envelope-builder');
+        $this->caller    = $this->kupivkredit->get('caller');
     }
 
     /**
-     * Провайдер данных вызовов
+     * Провайдер данных вызовов.
      *
      * @return array
      */
@@ -301,19 +314,16 @@ class IntegrationTest extends PHPUnit_Framework_TestCase
 
     /**
      * Тест вызова Ping.
+     *
      * @dataProvider callProvider
      */
     public function testCall(array $message, array $params, array $expected)
     {
-        $envelope = $this->builder->build(
-            $message,
-            $params['apiSecret']
-        );
+        $request  = $this->requester->build($message);
+	    $sign     = $this->signer->sign($request->toString(), $params['apiSecret']);
+	    $envelope = $this->enveloper->build($request, $sign);
 
-        $host = $params['host'];
-        $data = $envelope->asXML();
-
-        $result = $this->caller->call($host, $data);
+        $result = $this->caller->call($params['host'], $envelope->asXML(), array(CURLOPT_PROXY => null));
 
         $this->assertInstanceOf('Kupivkredit\Response', $result);
         $this->assertEquals($expected['status'], $result->getStatus());

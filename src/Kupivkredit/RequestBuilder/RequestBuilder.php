@@ -15,7 +15,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\EnvelopeBuilder;
+namespace Kupivkredit\RequestBuilder;
 
 use Kupivkredit\XMLBuilder\IXMLBuilder;
 use Kupivkredit\Request;

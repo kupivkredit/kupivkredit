@@ -18,6 +18,9 @@
 namespace Kupivkredit\Caller;
 
 use Kupivkredit\Response;
+use Kupivkredit\Envelope;
+use Kupivkredit\Caller\Exception\CallerException;
+use Exception;
 
 /**
  * Имплементация отправителя API-вызовов.
@@ -31,19 +34,22 @@ use Kupivkredit\Response;
  */
 class CallerHTTP implements ICaller
 {
-    /**
-     * Отправляет запрос.
-     *
-     * @param string $host
-     * @param string $data
-     *
-     * @return Response
-     */
-    public function call($host, $data = '')
+	/**
+	 * Отправляет запрос.
+	 *
+	 * @param string $host
+	 * @param string $data
+	 * @param array  $options
+	 *
+	 * @throws CallerException
+	 *
+	 * @return bool|\Kupivkredit\Response
+	 */
+	public function call($host, $data = '', array $options = array())
     {
         $curl = curl_init();
 
-        $options = array(
+        $default = array(
             CURLOPT_URL            => $host,
             CURLOPT_CUSTOMREQUEST  => 'POST',
             CURLOPT_POSTFIELDS     => $data,
@@ -53,15 +59,22 @@ class CallerHTTP implements ICaller
             CURLOPT_HEADER         => true,
         );
 
+	    $options = $default + $options;
+
         curl_setopt_array($curl, $options);
 
         $curlExec = curl_exec($curl);
 
+	    $response = false;
+
         if ($curlExec !== false) {
             $body = substr($curlExec, curl_getinfo($curl, CURLINFO_HEADER_SIZE));
-            $response = new Response($body);
-        } else {
-            $response =  false;
+
+	        try {
+		        $response = new Response($body);
+	        } catch (Exception $e) {
+		        throw new CallerException($e->getMessage(), $body);
+	        }
         }
 
         curl_close($curl);

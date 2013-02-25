@@ -15,34 +15,45 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\SignService;
+namespace Kupivkredit\Caller\Exception;
+
+use Kupivkredit\Exception\KupivkreditException;
 
 /**
- * Имплементация сервиса подписи сообщения.
+ * Исключение пакета.
  *
- * @package SignService
+ * @package Caller
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-class SignServiceImpl implements ISignService
+class CallerException extends KupivkreditException
 {
-    const ITERATION_COUNT = 1102;
+	/**
+	 * Тело ответа запроса.
+	 *
+	 * @var string
+	 */
+	protected $body;
 
-    /**
-     * Подписывает сообщение.
-     *
-     * @param  string $message
-     * @param  string $secret
-     * @return string
-     */
-    public function sign($message, $secret)
-    {
-        $message = $message.$secret;
-        $result = md5($message).sha1($message);
+	/**
+	 * Конструктор
+	 *
+	 * @param string $message
+	 * @param int $body
+	 */
+	public function __construct($message = "", $body)
+	{
+		parent::__construct($message);
 
-        for ($i = 0; $i < self::ITERATION_COUNT; $i++) {
-            $result = md5($result);
-        }
+		$this->body    = $body;
+	}
 
-        return $result;
-    }
+	/**
+	 * Возвращает тело ответа запроса.
+	 *
+	 * @return string
+	 */
+	public function getBody()
+	{
+		return $this->body;
+	}
 }

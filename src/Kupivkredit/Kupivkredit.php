@@ -27,7 +27,7 @@ use Kupivkredit\DependencyManager\DependencyManager;
  */
 final class Kupivkredit extends DependencyManager
 {
-    const VERSION = '0.2.0-dev';
+    const VERSION = '0.2.0';
 
     const HOST_TEST        = 'https://kupivkredit-test-api.tcsbank.ru:8100/api';
     const HOST_PRODUCTION  = 'https://api.kupivkredit.ru/api';

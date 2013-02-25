@@ -31,4 +31,14 @@ use \SimpleXMLElement;
 class Request extends SimpleXMLElement
 {
 	const TAG = 'request';
+
+	/**
+	 * Представляет объект в виде строки.
+	 *
+	 * @return string
+	 */
+	public function toString()
+	{
+		return base64_encode($this->asXML());
+	}
 }

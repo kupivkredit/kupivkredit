@@ -15,24 +15,34 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit\Caller;
+namespace Kupivkredit\SignService;
 
 /**
- * Интерфейс отправителя API-вызова.
+ * Имплементация сервиса подписи сообщения.
  *
- * @package Caller
+ * @package SignService
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-interface ICaller
+class SignService implements ISignService
 {
-	/**
-	 * Отправляет запрос.
-	 *
-	 * @param string $host
-	 * @param string $data
-	 * @param array  $options
-	 *
-	 * @return bool|\Kupivkredit\Response
-	 */
-	public function call($host, $data = '', array $options = array());
+    const ITERATION_COUNT = 1102;
+
+    /**
+     * Подписывает сообщение.
+     *
+     * @param  string $message
+     * @param  string $secret
+     * @return string
+     */
+    public function sign($message, $secret)
+    {
+        $message = $message.$secret;
+        $result = md5($message).sha1($message);
+
+        for ($i = 0; $i < self::ITERATION_COUNT; $i++) {
+            $result = md5($result);
+        }
+
+        return $result;
+    }
 }

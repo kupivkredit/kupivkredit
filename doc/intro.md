@@ -35,21 +35,25 @@
 
 + Установите [Composer][1] в ваш проект:
 
-`curl -s https://getcomposer.org/installer | php`
+```sh
+curl -s https://getcomposer.org/installer | php
+```
 
 + Укажите зависимость Вашего приложения от Библиотеки в файле composer.json:
 
-`
+```javascript
 {
     "require": {
         "kupivkredit/kupivkredit": "dev-master"
     }
 }
-`
+```
 
 + Установите все зависимости:
 
-`php composer.phar install`
+```sh
+php composer.phar install
+```
 
 Более подробно использование пакетов composer описано на [официальном сайте composer][2].
 
@@ -58,7 +62,9 @@
 + Установите [git][3].
 + Склонируйте последнюю версию библиотеки:
 
-`git clone https://github.com/kupivkredit/kupivkredit.git`
+```sh
+git clone https://github.com/kupivkredit/kupivkredit.git
+```
 
 #### zip-архив с github
 

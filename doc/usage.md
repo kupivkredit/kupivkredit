@@ -96,9 +96,9 @@ $kupivkredit = new Kupivkredit(
 
 Данный метод принимает три параметра, два из которых опциональны:
 
-    + $method : string - Имя вызова (хранится в константах класса Kupivkredit, например Kupivkredit::API_PING)
-    + [$message : array = array()] - Сообщение, тег params из документации API
-    + [$options : array = array()] - Набор параметров в формате [curl_setopt_array][3]
+   + $method : string - Имя вызова (хранится в константах класса Kupivkredit, например Kupivkredit::API_PING)
+   + [$message : array = array()] - Сообщение, тег params из документации API
+   + [$options : array = array()] - Набор параметров в формате [curl_setopt_array][3]
 
 В случае с вызовом Ping нам достаточно передать лишь первый параметр:
 

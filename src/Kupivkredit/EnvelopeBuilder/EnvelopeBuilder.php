@@ -27,23 +27,41 @@ use Kupivkredit\SignService\ISignService;
  *
  * @package EnvelopeBuilder
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
+ * TODO Возможно вернуть SignService сюда, тк проиходит дублирование кода, выполняющего компрессию реквеста.
  */
 class EnvelopeBuilder implements IEnvelopeBuilder
 {
+	/**
+	 * @var \Kupivkredit\SignService\ISignService
+	 */
+	protected $signer;
+
+	/**
+	 * Конструктор.
+	 *
+	 * @param \Kupivkredit\SignService\ISignService $signer
+	 */
+	public function __construct(ISignService $signer)
+	{
+		$this->signer = $signer;
+	}
 
 	/**
 	 * Создает конверт API-вызова.
 	 *
 	 * @param  Request               $request
-	 * @param  string                $sign
+	 * @param  string                $secret
 	 *
 	 * @return \Kupivkredit\Envelope
 	 */
-	public function build(Request $request, $sign)
+	public function build(Request $request, $secret)
     {
         $envelope = new Envelope(sprintf('<%1$s></%1$s>', Envelope::TAG));
 
-        $envelope->addChild(Envelope::MESSAGE, $request->toString());
+	    $message = base64_encode($request->asXML());
+	    $sign = $this->signer->sign($message, $secret);
+
+        $envelope->addChild(Envelope::MESSAGE, $message);
         $envelope->addChild(Envelope::SIGN,    $sign);
 
         return $envelope;

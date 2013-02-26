@@ -21,5 +21,8 @@
         <testsuite name="ClassLoaderTest">
             <directory>Kupivkredit/ClassLoader</directory>
         </testsuite>
+        <testsuite name="CallProviderTest">
+            <directory>Kupivkredit/CallProvider</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

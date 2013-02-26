@@ -15,20 +15,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit;
-
-use \SimpleXMLElement;
+namespace Kupivkredit\CallProvider;
 
 /**
- * Конверт API-запроса.
- * Расширяет класс SimpleXMLElement.
- *
- * @see \SimpleXMLElement
- *
- * @package Kupivkredit
+ * Провайдер сервиса вызова методов API.
+ * @package CallProvider
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-class Request extends SimpleXMLElement
+interface ICallProvider
 {
-	const TAG = 'request';
+	/**
+	 * Формирует конверт сообщения и передает его указанному методу API.
+	 *
+	 * @param string $method
+	 * @param array  $message
+	 * @param array  $options
+	 *
+	 * @return bool|\Kupivkredit\Response
+	 */
+	public function call($method, array $message = array(), array $options = array());
 }

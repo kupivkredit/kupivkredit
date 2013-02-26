@@ -20,7 +20,6 @@
  *
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-error_reporting(E_ERROR | E_PARSE | E_COMPILE_ERROR | E_RECOVERABLE_ERROR);
 
 use Kupivkredit\Kupivkredit;
 
@@ -32,48 +31,40 @@ $classLoader->registerAutoload();
 
 // Инициализация контейнера сервисов КупиВкредит:
 
-$kupivkredit = new Kupivkredit();
+$kupivkredit = new Kupivkredit(array(
+	'partnerId' => '1-17YB8ON',
+	'apiKey'    => '123qwe',
+	'apiSecret' => '321ewq',
+	'host'      => Kupivkredit::HOST_TEST,
+));
 
-// Инициализация параметров партнера КупиВкредит:
+// Отправка сообщения, получение результата API-вызова (короткий, рекомендованный способ):
 
-$partnerId = '1-17YB8ON';
-$apiKey    = '123qwe';
-$apiSecret = '321ewq';
-$host      = implode('/', array(Kupivkredit::HOST_TEST, Kupivkredit::API_GET_DECISION));
+$result = $kupivkredit->call(Kupivkredit::API_GET_DECISION, array('PartnerOrderId' => 'your_order_id_here'), array(CURLOPT_PROXY => null));
 
-/**
- * Получение необходимых сервисов для отправки запроса:
- *
- * @var $requester \Kupivkredit\RequestBuilder\IRequestBuilder
- * @var $signer \Kupivkredit\SignService\ISignService
- * @var $builder \Kupivkredit\EnvelopeBuilder\IEnvelopeBuilder
- * @var $caller \Kupivkredit\Caller\ICaller
- */
+// Вывод результата API-вызова:
+print_r($result);
+
+// Отправка сообщения, получение результата API-вызова (доробный способ):
+
+/* @var $enveloper \Kupivkredit\EnvelopeBuilder\IEnvelopeBuilder */
+/* @var $requester \Kupivkredit\RequestBuilder\IRequestBuilder */
+/* @var $caller \Kupivkredit\Caller\ICaller */
 $requester = $kupivkredit->get('request-builder');
-$signer    = $kupivkredit->get('sign-service');
 $enveloper = $kupivkredit->get('envelope-builder');
 $caller    = $kupivkredit->get('caller');
 
-// Формирование сообщения API-вызова:
-
 $request = $requester->build(
 	array(
-		'partnerId' => $partnerId,
-		'apiKey'    => $apiKey,
-		'params'    => array(
-			'PartnerOrderId' => 'your_order_id_here'
-		)
+		'partnerId' => '1-17YB8ON',
+		'apiKey'    => '123qwe',
+		'params'    => array()
 	)
 );
 
-$sign = $signer->sign($request, $apiSecret);
+$envelope = $enveloper->build($request, '321ewq');
 
-$envelope = $enveloper->build($request, $sign);
-
-// Отправка сообщения, получение результата API-вызова:
-
-$response = $caller->call($host, $envelope);
+$result = $caller->call(Kupivkredit::HOST_TEST.'/'.Kupivkredit::API_GET_DECISION, $envelope->asXML(), array(CURLOPT_PROXY => null));
 
 // Вывод результата API-вызова:
-
-print_r($response);
+print_r($result);

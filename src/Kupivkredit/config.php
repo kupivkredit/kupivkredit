@@ -34,6 +34,9 @@ $_config = array(
     ),
     'envelope-builder' => array(
         'class' => 'Kupivkredit\EnvelopeBuilder\EnvelopeBuilder',
+	    'arguments' => array(
+		    '@sign-service'
+	    )
     ),
 	'request-builder' => array(
 		'class' => 'Kupivkredit\RequestBuilder\RequestBuilder',
@@ -41,4 +44,16 @@ $_config = array(
 			'setXMLBuilder' => array('@constructor-xml')
 		)
 	),
+	'call-provider' => array(
+		'class' => 'Kupivkredit\CallProvider\CallProvider',
+		'arguments' => array(
+			'@request-builder',
+			'@envelope-builder',
+			'@caller',
+			'%partnerId%',
+			'%apiKey%',
+			'%apiSecret%',
+			'%host%',
+		)
+	)
 );

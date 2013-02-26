@@ -27,7 +27,7 @@ use Kupivkredit\DependencyManager\DependencyManager;
  */
 final class Kupivkredit extends DependencyManager
 {
-    const VERSION = '0.2.0';
+    const VERSION = '0.2.5';
 
     const HOST_TEST        = 'https://kupivkredit-test-api.tcsbank.ru:8100/api';
     const HOST_PRODUCTION  = 'https://api.kupivkredit.ru/api';
@@ -61,4 +61,21 @@ final class Kupivkredit extends DependencyManager
 
         $this->setConfig($config);
     }
+
+	/**
+	 * Ярлык на вызов метода в упрощенной форме.
+	 *
+	 * @param string $method
+	 * @param array  $message
+	 * @param array  $options
+	 *
+	 * @return bool|Response
+	 */
+	public function call($method, array $message = array(), array $options = array())
+	{
+		/** @var $callProvider \Kupivkredit\CallProvider\ICallProvider */
+		$callProvider = $this->get('call-provider');
+
+		return $callProvider->call($method, $message, $options);
+	}
 }

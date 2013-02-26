@@ -15,20 +15,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Kupivkredit;
+namespace Kupivkredit\CallProvider;
 
-use \SimpleXMLElement;
+use Kupivkredit\Exception\KupivkreditException;
 
 /**
- * Конверт API-запроса.
- * Расширяет класс SimpleXMLElement.
  *
- * @see \SimpleXMLElement
- *
- * @package Kupivkredit
+ * @package
  * @author Sergey Kamardin <s.kamardin@tcsbank.ru>
  */
-class Request extends SimpleXMLElement
+class CallProviderException extends KupivkreditException
 {
-	const TAG = 'request';
+
 }

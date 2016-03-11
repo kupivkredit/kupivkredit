@@ -41,7 +41,8 @@ final class Kupivkredit extends DependencyManager
     const API_CANCEL_ORDER           = 'cancel_order';
     const API_GET_TAKEOVER_DOCUMENTS = 'get_takeover_documents';
     const API_GET_RETURN_GOODS_FORM  = 'get_return_goods_form';
-
+    const API_GET_RETURN_GOODS_INFO  = 'get_return_goods_info';
+    
     /**
      * Конструктор.
      *
